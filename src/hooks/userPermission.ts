@@ -1,8 +1,8 @@
-import { User } from "../store"
+import { User } from "../utils/store"
 
 export const userPermission = () => {
 
-    const allowedRoles = ['Admin', 'Manager']
+    const allowedRoles = ['admin', 'manager']
 
     const hasPermission = (user: User | null) => {
 

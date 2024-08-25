@@ -12,7 +12,7 @@ export interface User {
 interface AuthUser {
     user: null | User;
     setUser: (user: User) => void;
-    logout: () => void;
+    logoutFromStore: () => void;
 }
 
 
@@ -21,7 +21,7 @@ export const useAuthStore = create<AuthUser>()(
         (set) => ({
             user: null,
             setUser: (user) => set({ user }),
-            logout: () => set({ user: null }),
+            logoutFromStore: () => set({ user: null }),
         })
     )
 );
