@@ -1,24 +1,43 @@
 import { Navigate, Outlet } from 'react-router-dom'
 import { useAuthStore } from '../utils/store';
-import { Button, Layout, Menu, theme, Typography } from 'antd';
+import { Avatar, Badge, Button, Dropdown, Flex, FlexProps, Layout, Menu, Space, theme, Typography } from 'antd';
 import { Content, Footer, Header } from 'antd/es/layout/layout';
 import Sider from 'antd/es/layout/Sider';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import Logo from "../assets/icons/pizza-logo.svg"
-import Icon, { MenuFoldOutlined, MenuUnfoldOutlined, HomeOutlined } from '@ant-design/icons';
+import Icon, { BellOutlined, UserOutlined, BellFilled, MenuUnfoldOutlined, MenuFoldOutlined, HomeOutlined } from '@ant-design/icons';
 import Orders from '../pages/sharedComponent/icons/Orders';
 import Sales from '../pages/sharedComponent/icons/Sales';
 import Promocode from '../pages/sharedComponent/icons/Promocode';
 import MenuIcon from '../pages/sharedComponent/icons/MenuIcon';
 import HomeIcon from '../pages/sharedComponent/icons/HomeIcon';
+import { useMutation } from '@tanstack/react-query';
+import { logout } from '../pages/services/api';
 
+
+const logoutUserFuntion = async () => {
+    const { data } = await logout();
+    return data;
+}
 const Dashboard = () => {
+    const { logoutFromStore } = useAuthStore()
     const [collapsed, setCollapsed] = useState(false);
     const { user } = useAuthStore();
 
     if (user === null) {
         return <Navigate to="/auth/login" replace={true} />;
     }
+
+    const { mutate: logoutUser } = useMutation({
+        mutationKey: ['logout'],
+        mutationFn: logoutUserFuntion,
+        onSuccess: () => {
+            logoutFromStore;
+            return;
+        }
+    });
+
+
 
     const { token: { colorBgContainer, borderRadiusLG } } = theme.useToken();
 
@@ -66,16 +85,42 @@ const Dashboard = () => {
             </Sider>
             <Layout>
                 <Header style={{ padding: 0, background: colorBgContainer }}>
-                    <Button
-                        type="text"
-                        icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-                        onClick={() => setCollapsed(!collapsed)}
-                        style={{
-                            fontSize: '16px',
-                            width: 64,
-                            height: 64,
-                        }}
-                    />
+
+                    <Flex gap="middle" align="start" justify="space-between" style={{ paddingLeft: '16px', paddingRight: '30px' }}>
+                        {/* <Button
+                            type="text"
+                            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+                            onClick={() => setCollapsed(!collapsed)}
+                            style={{
+                                fontSize: '16px',
+                                width: 64,
+                                height: 64,
+                            }}
+                        /> */}
+                        <Badge text="Admin" status='success' />
+                        <Space>
+                            <Space style={{ paddingRight: '15px' }}>
+                                <Badge dot={true} >
+                                    <BellFilled />
+                                </Badge>
+                            </Space>
+                            <Space wrap size={16}>
+                                <Dropdown menu={
+                                    {
+                                        items: [{
+                                            key: '1',
+                                            icon: <UserOutlined />,
+                                            label: 'Logout',
+                                            onClick: () => logoutUser()
+                                        }]
+                                    }}
+                                    placement="bottom">
+                                    <Avatar size={40} style={{ backgroundColor: '#87d068' }} icon={<UserOutlined />} />
+                                </Dropdown>
+                            </Space>
+                        </Space>
+                    </Flex>
+
                 </Header>
                 <Content
                     style={{
@@ -94,7 +139,7 @@ const Dashboard = () => {
                 </Footer>
 
             </Layout>
-        </Layout>
+        </Layout >
 
     )
 }
