@@ -1,16 +1,14 @@
-import { Navigate, Outlet } from 'react-router-dom'
+import { Navigate, NavLink, Outlet } from 'react-router-dom'
 import { useAuthStore } from '../utils/store';
-import { Avatar, Badge, Button, Dropdown, Flex, FlexProps, Layout, Menu, Space, theme, Typography } from 'antd';
 import { Content, Footer, Header } from 'antd/es/layout/layout';
 import Sider from 'antd/es/layout/Sider';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Logo from "../assets/icons/pizza-logo.svg"
-import Icon, { BellOutlined, UserOutlined, BellFilled, MenuUnfoldOutlined, MenuFoldOutlined, HomeOutlined } from '@ant-design/icons';
-import Orders from '../pages/sharedComponent/icons/Orders';
+import { Avatar, Badge, Dropdown, Flex, Layout, Menu, Space, theme, Typography } from 'antd';
+import Icon, { UserOutlined, BellFilled, ShoppingOutlined, MenuOutlined, MenuUnfoldOutlined, MenuFoldOutlined, HomeOutlined } from '@ant-design/icons';
 import Sales from '../pages/sharedComponent/icons/Sales';
 import Promocode from '../pages/sharedComponent/icons/Promocode';
 import MenuIcon from '../pages/sharedComponent/icons/MenuIcon';
-import HomeIcon from '../pages/sharedComponent/icons/HomeIcon';
 import { useMutation } from '@tanstack/react-query';
 import { logout } from '../pages/services/api';
 
@@ -20,41 +18,37 @@ const logoutUserFuntion = async () => {
     return data;
 }
 const Dashboard = () => {
-    const { logoutFromStore } = useAuthStore()
+    const { logoutFromStore, user } = useAuthStore();
     const [collapsed, setCollapsed] = useState(false);
-    const { user } = useAuthStore();
-
-    if (user === null) {
-        return <Navigate to="/auth/login" replace={true} />;
-    }
 
     const { mutate: logoutUser } = useMutation({
         mutationKey: ['logout'],
         mutationFn: logoutUserFuntion,
         onSuccess: () => {
-            logoutFromStore;
-            return;
+            logoutFromStore();
         }
     });
 
-
+    if (user === null) {
+        return <Navigate to="/auth/login" replace={true} />;
+    }
 
     const { token: { colorBgContainer, borderRadiusLG } } = theme.useToken();
 
     const items = [
         {
-            key: '1',
+            key: "/",
             icon: <HomeOutlined />,
             label: 'Home',
         },
-        // {
-        //     key: '2',
-        //     icon: <Icon component={MenuIcon} />,
-        //     label: 'Menu',
-        // },
+        {
+            key: '2',
+            icon: <MenuOutlined />,
+            label: 'Menu',
+        },
         {
             key: '3',
-            icon: <Icon component={Orders} />,
+            icon: <ShoppingOutlined />,
             label: 'Orders',
         },
         {
@@ -63,7 +57,13 @@ const Dashboard = () => {
             label: 'Sales',
         },
         {
-            key: '5',
+            key: "/users",
+            icon: <UserOutlined />,
+            label:
+                <NavLink to="/users" style={{ color: 'black' }}>Users</NavLink>
+        },
+        {
+            key: '6',
             icon: <Icon component={Promocode} />,
             label: 'Promos',
         },
@@ -115,7 +115,7 @@ const Dashboard = () => {
                                         }]
                                     }}
                                     placement="bottom">
-                                    <Avatar size={40} style={{ backgroundColor: '#87d068' }} icon={<UserOutlined />} />
+                                    <Avatar size={40} style={{ backgroundColor: '#87d068', cursor: 'pointer' }} icon={<UserOutlined />} />
                                 </Dropdown>
                             </Space>
                         </Space>

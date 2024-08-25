@@ -21,3 +21,10 @@ export const logout = async () => {
     const response = await api.post(apiRoutes.logout, '')
     return response;
 }
+
+
+// To Get all User
+export const getAllUserList = async () => {
+    const response = await api.post(apiRoutes.getAllUserList, '')
+    return response;
+}
