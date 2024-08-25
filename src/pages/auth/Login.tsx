@@ -42,10 +42,10 @@ const Login = () => {
         onSuccess: (userData) => {
             refetch();
 
-            if (!userPermission().isAllowed(userData.data)) {
-                logoutUser();
-                return;
-            }
+            // if (!userPermission().isAllowed(userData.data)) {
+            //     logoutUser();
+            //     return;
+            // }
 
             setUser(userData.data)
         }
