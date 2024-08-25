@@ -1,10 +1,23 @@
-import { api } from "./client"
-// import { Credentials } from "../Types"
+import { apiRoutes } from "./apiRoutes";
+import { api } from "./axios"
 
 
-// Auth Service
-export const login = (credentials: { email: string, password: string }) => api.post("/api/auth/login", credentials)
+// To login a User
+export const login = async (credentials: { email: string, password: string }) => {
+    const response = await api.post(apiRoutes.login, credentials)
+    return response;
+}
 
-export const self = () => api.post("/api/auth/self")
 
-export const logout = () => api.post("/api/auth/logout")
+// To check if user is authenticated
+export const self = async () => {
+    const response = await api.post(apiRoutes.self, '')
+    return response;
+}
+
+
+// To logout a User
+export const logout = async () => {
+    const response = await api.post(apiRoutes.logout, '')
+    return response;
+}

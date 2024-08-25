@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom"
 import { self } from "../pages/services/api";
 import { useAuthStore } from "../utils/store";
 import { useEffect } from "react";
+import LoadingSpinner from "../pages/sharedComponent/LoadingSpinner";
 
 // To check if user is authenticated
 const getSelf = async () => {
@@ -24,7 +25,7 @@ const Root = () => {
     }, [userData, setUser])
 
     if (isLoading) {
-        return <div>Loading...</div>
+        return <LoadingSpinner />
     }
 
     return (
