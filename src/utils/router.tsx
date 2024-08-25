@@ -5,7 +5,7 @@ import Login from "../pages/auth/Login";
 import Dashboard from "../layouts/Dashboard";
 import NoAuth from "../layouts/NoAuth";
 import Root from "../layouts/Root";
-import Users from "../pages/Users";
+import Users from "../pages/users/Users";
 
 export const router = createBrowserRouter([
     {

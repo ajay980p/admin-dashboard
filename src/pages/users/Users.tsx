@@ -1,10 +1,11 @@
 import { Breadcrumb, Table } from "antd"
 import { RightOutlined } from "@ant-design/icons"
 import { Link } from "react-router-dom"
-import { getAllUserList } from "./services/api";
+import { getAllUserList } from "../services/api";
 import { useMutation } from "@tanstack/react-query";
-import LoadingSpinner from "./sharedComponent/LoadingSpinner";
+import LoadingSpinner from "../sharedComponent/LoadingSpinner";
 import { useEffect, useState } from "react";
+import UserFilter from "./UserFilter";
 
 const columns = [
     {
@@ -82,6 +83,11 @@ const Users = () => {
                     },
                 ]}
             />
+
+
+            <div style={{ marginTop: 20 }}>
+                <UserFilter />
+            </div>
 
             <div style={{ marginTop: 20 }}>
                 <Table dataSource={users} columns={columns} />

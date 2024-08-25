@@ -1,4 +1,4 @@
-import { Navigate, NavLink, Outlet } from 'react-router-dom'
+import { Navigate, NavLink, Outlet, useLocation } from 'react-router-dom'
 import { useAuthStore } from '../utils/store';
 import { Content, Footer, Header } from 'antd/es/layout/layout';
 import Sider from 'antd/es/layout/Sider';
@@ -20,6 +20,9 @@ const logoutUserFuntion = async () => {
 const Dashboard = () => {
     const { logoutFromStore, user } = useAuthStore();
     const [collapsed, setCollapsed] = useState(false);
+    const location = useLocation();
+
+    console.log("Loa=cation : ", location.pathname)
 
     const { mutate: logoutUser } = useMutation({
         mutationKey: ['logout'],
@@ -39,22 +42,7 @@ const Dashboard = () => {
         {
             key: "/",
             icon: <HomeOutlined />,
-            label: 'Home',
-        },
-        {
-            key: '2',
-            icon: <MenuOutlined />,
-            label: 'Menu',
-        },
-        {
-            key: '3',
-            icon: <ShoppingOutlined />,
-            label: 'Orders',
-        },
-        {
-            key: '4',
-            icon: <Icon component={Sales} />,
-            label: 'Sales',
+            label: <NavLink to="/" style={{ color: 'black' }}>Home</NavLink>
         },
         {
             key: "/users",
@@ -63,7 +51,22 @@ const Dashboard = () => {
                 <NavLink to="/users" style={{ color: 'black' }}>Users</NavLink>
         },
         {
-            key: '6',
+            key: '/menu',
+            icon: <MenuOutlined />,
+            label: 'Menu',
+        },
+        {
+            key: '/orders',
+            icon: <ShoppingOutlined />,
+            label: 'Orders',
+        },
+        {
+            key: '/sales',
+            icon: <Icon component={Sales} />,
+            label: 'Sales',
+        },
+        {
+            key: '/promos',
             icon: <Icon component={Promocode} />,
             label: 'Promos',
         },
@@ -79,7 +82,7 @@ const Dashboard = () => {
                 <Menu
                     theme="light"
                     mode="inline"
-                    defaultSelectedKeys={['1']}
+                    defaultSelectedKeys={[location.pathname]}
                     items={items}
                 />
             </Sider>
