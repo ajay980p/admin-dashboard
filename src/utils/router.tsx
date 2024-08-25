@@ -4,31 +4,37 @@ import Categories from "../pages/Categories";
 import Login from "../pages/auth/Login";
 import Dashboard from "../layouts/Dashboard";
 import NoAuth from "../layouts/NoAuth";
+import Root from "../layouts/Root";
 
 export const router = createBrowserRouter([
     {
         path: "/",
-        element: <Dashboard />,
+        element: <Root />,
         children: [
             {
                 path: "",
-                element: <HomePage />
+                element: <Dashboard />,
+                children: [
+                    {
+                        path: "",
+                        element: <HomePage />
+                    },
+                    {
+                        path: "categories",
+                        element: <Categories />
+                    },
+                ]
             },
             {
-                path: "categories",
-                element: <Categories />
+                path: "/auth",
+                element: <NoAuth />,
+                children: [
+                    {
+                        path: "login",
+                        element: <Login />
+                    },
+                ]
             },
         ]
-    },
-    {
-        path: "/auth",
-        element: <NoAuth />,
-        children: [
-            {
-                path: "login",
-                element: <Login />
-            },
-        ]
-    },
-
+    }
 ])
