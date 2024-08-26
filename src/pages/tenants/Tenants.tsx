@@ -1,13 +1,14 @@
-import { Breadcrumb, Button, Table } from "antd"
+import { Breadcrumb, Button, Flex, Form, Spin, Table } from "antd"
 import { RightOutlined } from "@ant-design/icons"
 import { Link } from "react-router-dom"
-import { getAllTenantsList } from "../services/api";
-import { useMutation } from "@tanstack/react-query";
+import { createNewTenant, getAllTenantsList } from "../services/api";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import LoadingSpinner from "../sharedComponent/LoadingSpinner";
 import { useEffect, useState } from "react";
 import TenantsFilter from "./TenantsFilter";
 import TenantsDrawer from "./TenantsDrawer";
-import { PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined, LoadingOutlined } from '@ant-design/icons';
+import { TenantData } from "../../utils/types";
 
 const columns = [
     {
@@ -17,13 +18,18 @@ const columns = [
     },
     {
         title: 'Name',
+        dataIndex: 'name',
         key: 'name',
-        render: (text: string, record: any) => `${record.firstName} ${record.lastName}`,
+    },
+    {
+        title: 'Email',
+        dataIndex: 'mailId',
+        key: 'mailId',
     },
     {
         title: 'Address',
-        dataIndex: 'age',
-        key: 'age',
+        dataIndex: 'address',
+        key: 'address',
     },
     {
         title: 'Created At',
@@ -32,63 +38,110 @@ const columns = [
     },
 ];
 
-const getTenants = async () => {
-    const response = await getAllTenantsList();
+const getTenants = async (pageData: { currentPage: number, pageSize: number }) => {
+    const response = await getAllTenantsList({
+        currentPage: pageData.currentPage,
+        pageSize: pageData.pageSize,
+    });
     return response.data;
 }
+const submitTenant = async (tenantData: TenantData) => {
+    const response = await createNewTenant({
+        name: tenantData.name,
+        address: tenantData.address,
+        mailId: tenantData.mailId,
+    });
+    return response.data;
+};
 const Tenants = () => {
-    const [tenants, setTenants] = useState([]);
+    const [form] = Form.useForm();
+    const [currentPage, setCurrentPage] = useState(1);
+    const [pageSize, setPageSize] = useState(2);
     const [showDrawer, setShowDrawer] = useState(false);
 
-    const { mutate, data: dataReceived, isPending, isError } = useMutation({
-        mutationKey: ['tenants'],
-        mutationFn: getTenants,
-        onSuccess: (response) => {
-            setTenants(response.data);
-        }
+    // Using useQuery to fetch the list of Tenants
+    const { data: tenants, isLoading: isTenantsLoading, refetch, isFetching: isTenantsDataFetching } = useQuery({
+        queryKey: ["tenants"],
+        queryFn: () => getTenants({ currentPage, pageSize }),
+    });
+
+    // Using useMutation to handle Tenants submission
+    const { mutate: submitTenantMutation, isPending: isFormSubmitting } = useMutation({
+        mutationKey: ["submitTenant"],
+        mutationFn: submitTenant,
+        onSuccess: () => {
+            setShowDrawer(false);
+            form.resetFields();
+            refetch();
+        },
     });
 
     useEffect(() => {
-        if (!dataReceived) {
-            mutate();
-        }
-    }, [mutate, dataReceived]);
+        refetch();
+    }, [currentPage, pageSize]);
 
-    if (isPending) {
+    if (isTenantsLoading || isFormSubmitting) {
         return <LoadingSpinner />
     }
 
     const handleDrawer = () => {
-        setShowDrawer(!showDrawer);
+        setShowDrawer(false);
+    }
+
+    const handleTenantDrawer = async () => {
+        try {
+            const values = await form.validateFields();
+            submitTenantMutation(values);
+        } catch (errorInfo) {
+            console.log('Validation Failed');
+        }
     }
 
     return (
         <>
-            <Breadcrumb
-                separator={<RightOutlined />}
-                items={[
-                    {
-                        title: <Link to="/">Dashboard</Link>,
-                    },
-                    {
-                        title: <Link to="/tenants">Restaurants</Link>,
-                    },
-                ]}
-            />
+            <Flex justify="space-between" align="center">
+                <Breadcrumb
+                    separator={<RightOutlined />}
+                    items={[
+                        {
+                            title: <Link to="/">Dashboard</Link>,
+                        },
+                        {
+                            title: <Link to="/tenants">Restaurants</Link>,
+                        },
+                    ]}
+                />
+                {isTenantsDataFetching && <Spin indicator={<LoadingOutlined spin />} size="large" />}
+            </Flex>
 
 
             <div style={{ marginTop: 20 }}>
                 <TenantsFilter >
-                    <Button type="primary" icon={<PlusOutlined />} onClick={handleDrawer}>
+                    <Button type="primary" icon={<PlusOutlined />} onClick={() => setShowDrawer(true)}>
                         Add Tenant
                     </Button>
                 </TenantsFilter>
             </div>
 
-            <TenantsDrawer title="Create Tenant" width={720} showDrawer={showDrawer} handleDrawer={handleDrawer} />
+            <TenantsDrawer title="Create Tenant" width={720} showDrawer={showDrawer} handleDrawer={handleDrawer} form={form}>
+                <Button onClick={handleDrawer}>Cancel</Button>
+                <Button onClick={() => handleTenantDrawer()} type="primary"> Submit</Button>
+            </TenantsDrawer>
 
             <div style={{ marginTop: 20 }}>
-                <Table dataSource={tenants} columns={columns} pagination={{ pageSize: 10 }} />
+                <Table
+                    dataSource={tenants.tenantsData}
+                    columns={columns}
+                    pagination={{
+                        total: tenants?.totalRecords,
+                        current: currentPage,
+                        pageSize: pageSize,
+                        onChange: (page, pageSize) => {
+                            setCurrentPage(page);
+                            setPageSize(pageSize);
+                        },
+                    }}
+                />
             </div>
         </>
     )
