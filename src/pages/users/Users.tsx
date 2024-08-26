@@ -1,4 +1,4 @@
-import { Breadcrumb, Button, Table } from "antd"
+import { Breadcrumb, Button, Form, Table } from "antd"
 import { RightOutlined } from "@ant-design/icons"
 import { Link } from "react-router-dom"
 import { getAllUserList } from "../services/api";
@@ -54,6 +54,7 @@ const getUsers = async () => {
 const Users = () => {
     const [users, setUsers] = useState([]);
     const [showDrawer, setShowDrawer] = useState(false);
+    const [form] = Form.useForm();
 
     const { mutate, data: dataReceived, isPending, isError } = useMutation({
         mutationKey: ['users'],
@@ -77,6 +78,12 @@ const Users = () => {
         setShowDrawer(!showDrawer);
     }
 
+    const handleDrawerForm = async () => {
+        await form.submit();
+        await form.validateFields();
+        console.log('Form Submitted: 234', await form.getFieldsValue());
+    }
+
     return (
         <>
             <Breadcrumb
@@ -91,7 +98,6 @@ const Users = () => {
                 ]}
             />
 
-
             <div style={{ marginTop: 20 }}>
                 <UserFilter handleDrawer={handleDrawer} >
                     <Button type="primary" icon={<PlusOutlined />} onClick={handleDrawer}>
@@ -100,7 +106,10 @@ const Users = () => {
                 </UserFilter>
             </div>
 
-            <UserDrawer title="Create User" width={720} showDrawer={showDrawer} handleDrawer={handleDrawer} />
+            <UserDrawer title="Create User" width={720} showDrawer={showDrawer} handleDrawer={handleDrawer} form={form}>
+                <Button onClick={handleDrawer}>Cancel</Button>
+                <Button onClick={handleDrawer} type="primary" onClickCapture={() => handleDrawerForm()}> Submit</Button>
+            </UserDrawer>
 
             <div style={{ marginTop: 20 }}>
                 <Table dataSource={users} columns={columns} />

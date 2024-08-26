@@ -22,8 +22,6 @@ const Dashboard = () => {
     const [collapsed, setCollapsed] = useState(false);
     const location = useLocation();
 
-    console.log("Loa=cation : ", location.pathname)
-
     const { mutate: logoutUser } = useMutation({
         mutationKey: ['logout'],
         mutationFn: logoutUserFuntion,
