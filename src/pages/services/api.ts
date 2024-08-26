@@ -28,3 +28,10 @@ export const getAllUserList = async () => {
     const response = await api.post(apiRoutes.getAllUserList, '')
     return response;
 }
+
+
+// To Get all Tenants List
+export const getAllTenantsList = async () => {
+    const response = await api.post(apiRoutes.getAllTenantsList, '')
+    return response;
+}

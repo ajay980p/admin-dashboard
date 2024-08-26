@@ -6,6 +6,7 @@ import Dashboard from "../layouts/Dashboard";
 import NoAuth from "../layouts/NoAuth";
 import Root from "../layouts/Root";
 import Users from "../pages/users/Users";
+import Tenants from "../pages/tenants/Tenants";
 
 export const router = createBrowserRouter([
     {
@@ -27,6 +28,10 @@ export const router = createBrowserRouter([
                     {
                         path: "users",
                         element: <Users />
+                    },
+                    {
+                        path: "tenants",
+                        element: <Tenants />
                     },
                 ]
             },

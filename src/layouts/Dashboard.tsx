@@ -5,7 +5,7 @@ import Sider from 'antd/es/layout/Sider';
 import { useState } from 'react';
 import Logo from "../assets/icons/pizza-logo.svg"
 import { Avatar, Badge, Dropdown, Flex, Layout, Menu, Space, theme, Typography } from 'antd';
-import Icon, { UserOutlined, BellFilled, ShoppingOutlined, MenuOutlined, MenuUnfoldOutlined, MenuFoldOutlined, HomeOutlined } from '@ant-design/icons';
+import Icon, { UserOutlined, BellFilled, ShoppingOutlined, MenuOutlined, CoffeeOutlined, MenuUnfoldOutlined, MenuFoldOutlined, HomeOutlined } from '@ant-design/icons';
 import Sales from '../pages/sharedComponent/icons/Sales';
 import Promocode from '../pages/sharedComponent/icons/Promocode';
 import MenuIcon from '../pages/sharedComponent/icons/MenuIcon';
@@ -49,6 +49,12 @@ const Dashboard = () => {
             icon: <UserOutlined />,
             label:
                 <NavLink to="/users" style={{ color: 'black' }}>Users</NavLink>
+        },
+        {
+            key: "/tenants",
+            icon: <CoffeeOutlined />,
+            label:
+                <NavLink to="/tenants" style={{ color: 'black' }}>Restaurants</NavLink>
         },
         {
             key: '/menu',

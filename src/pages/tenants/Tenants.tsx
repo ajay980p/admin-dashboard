@@ -1,13 +1,13 @@
 import { Breadcrumb, Button, Table } from "antd"
 import { RightOutlined } from "@ant-design/icons"
 import { Link } from "react-router-dom"
-import { getAllUserList } from "../services/api";
+import { getAllTenantsList } from "../services/api";
 import { useMutation } from "@tanstack/react-query";
 import LoadingSpinner from "../sharedComponent/LoadingSpinner";
 import { useEffect, useState } from "react";
-import UserFilter from "./UserFilter";
-import UserDrawer from "./UserDrawer";
-import { PlusOutlined, SearchOutlined } from '@ant-design/icons'
+import TenantsFilter from "./TenantsFilter";
+import TenantsDrawer from "./TenantsDrawer";
+import { PlusOutlined } from '@ant-design/icons';
 
 const columns = [
     {
@@ -16,50 +16,35 @@ const columns = [
         render: (text: string, record: any, index: number) => index + 1,
     },
     {
-        title: 'User Name',
+        title: 'Name',
         key: 'name',
         render: (text: string, record: any) => `${record.firstName} ${record.lastName}`,
     },
     {
-        title: 'Status',
+        title: 'Address',
         dataIndex: 'age',
         key: 'age',
-    },
-    {
-        title: 'Role',
-        dataIndex: 'role',
-        key: 'role',
-    },
-    {
-        title: 'Email',
-        dataIndex: 'email',
-        key: 'email',
     },
     {
         title: 'Created At',
         dataIndex: 'created_at',
         key: 'created_at',
     },
-    // {
-    //     title: 'Actions',
-    //     dataIndex: 'actions',
-    //     key: 'actions',
-    // },
 ];
 
-const getUsers = async () => {
-    const response = await getAllUserList();
+const getTenants = async () => {
+    const response = await getAllTenantsList();
     return response.data;
 }
-const Users = () => {
-    const [users, setUsers] = useState([]);
+const Tenants = () => {
+    const [tenants, setTenants] = useState([]);
     const [showDrawer, setShowDrawer] = useState(false);
 
     const { mutate, data: dataReceived, isPending, isError } = useMutation({
-        mutationKey: ['users'],
-        mutationFn: getUsers,
+        mutationKey: ['tenants'],
+        mutationFn: getTenants,
         onSuccess: (response) => {
-            setUsers(response.data);
+            setTenants(response.data);
         }
     });
 
@@ -86,27 +71,27 @@ const Users = () => {
                         title: <Link to="/">Dashboard</Link>,
                     },
                     {
-                        title: <Link to="/users">Users</Link>,
+                        title: <Link to="/tenants">Restaurants</Link>,
                     },
                 ]}
             />
 
 
             <div style={{ marginTop: 20 }}>
-                <UserFilter handleDrawer={handleDrawer} >
+                <TenantsFilter >
                     <Button type="primary" icon={<PlusOutlined />} onClick={handleDrawer}>
-                        Add User
+                        Add Tenant
                     </Button>
-                </UserFilter>
+                </TenantsFilter>
             </div>
 
-            <UserDrawer title="Create User" width={720} showDrawer={showDrawer} handleDrawer={handleDrawer} />
+            <TenantsDrawer title="Create Tenant" width={720} showDrawer={showDrawer} handleDrawer={handleDrawer} />
 
             <div style={{ marginTop: 20 }}>
-                <Table dataSource={users} columns={columns} />
+                <Table dataSource={tenants} columns={columns} pagination={{ pageSize: 10 }} />
             </div>
         </>
     )
 }
 
-export default Users
+export default Tenants;

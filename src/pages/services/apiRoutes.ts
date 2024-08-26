@@ -4,4 +4,7 @@ export const apiRoutes = {
     self: '/auth/self',
 
     getAllUserList: '/users/getUserList',
+
+
+    getAllTenantsList: '/tenants/getAllTenantsList',
 }
