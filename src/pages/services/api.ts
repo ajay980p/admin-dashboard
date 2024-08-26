@@ -25,9 +25,9 @@ export const logout = async () => {
 
 
 // To Get all User
-export const getAllUserList = async () => {
-    const response = await api.post(apiRoutes.getAllUserList, '')
-    return response;
+export const getAllUserList = async (reqData: { currentPage: number, pageSize: number }) => {
+    const response = await api.post(apiRoutes.getAllUserList, reqData)
+    return response.data;
 }
 
 
