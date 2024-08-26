@@ -56,7 +56,7 @@ const submitTenant = async (tenantData: TenantData) => {
 const Tenants = () => {
     const [form] = Form.useForm();
     const [currentPage, setCurrentPage] = useState(1);
-    const [pageSize, setPageSize] = useState(2);
+    const [pageSize, setPageSize] = useState(10);
     const [showDrawer, setShowDrawer] = useState(false);
 
     // Using useQuery to fetch the list of Tenants

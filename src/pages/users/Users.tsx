@@ -22,9 +22,9 @@ const columns = [
         render: (text: string, record: any) => `${record.firstName} ${record.lastName}`,
     },
     {
-        title: "Status",
-        dataIndex: "age",
-        key: "age",
+        title: "Email",
+        dataIndex: "email",
+        key: "email",
     },
     {
         title: "Role",
@@ -32,9 +32,9 @@ const columns = [
         key: "role",
     },
     {
-        title: "Email",
-        dataIndex: "email",
-        key: "email",
+        title: "Restaurant At",
+        dataIndex: "created_at",
+        render: (text: string, record: any) => `${record.tenantName}, ${record.tenantAddress}`,
     },
     {
         title: "Created At",

@@ -1,7 +1,28 @@
 import { Card, Col, Form, Input, Row, Select } from 'antd'
 import { Roles } from '../../../utils/constant';
+import { useQuery } from '@tanstack/react-query';
+import { getAllTenantsList } from '../../services/api';
+import { useState } from 'react';
 
+const getTenants = async (pageData: { currentPage: number, pageSize: number }) => {
+    const response = await getAllTenantsList({
+        currentPage: pageData.currentPage,
+        pageSize: pageData.pageSize,
+    });
+    return response.data;
+}
 const UserForm = () => {
+    const [currentPage, setCurrentPage] = useState(1);
+    const [pageSize, setPageSize] = useState(2);
+
+    // Using useQuery to fetch the list of Tenants
+    const { data: tenants, isLoading: isTenantsLoading, refetch, isFetching: isTenantsDataFetching } = useQuery({
+        queryKey: ["tenants"],
+        queryFn: () => getTenants({ currentPage, pageSize }),
+    });
+
+
+
     return (
         <>
             <Row>
@@ -118,15 +139,30 @@ const UserForm = () => {
                                 >
                                     <Select
                                         size='large'
+                                        showSearch
                                         placeholder="Select Restaurant"
+                                        filterOption={(input, option) =>
+                                            String(option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                                        }
                                         style={{ width: '100%' }}
-                                        options={[
-                                            { value: 'jack', label: 'Jack' },
-                                            { value: 'lucy', label: 'Lucy' },
-                                            { value: 'Yiminghe', label: 'yiminghe' },
-                                            { value: 'disabled', label: 'Disabled' },
-                                        ]}
+                                        options={tenants?.tenantsData.map((tenant: { id: number; name: string }) => ({
+                                            label: tenant.name,
+                                            value: tenant.id
+                                        }))}
                                     />
+
+                                    {/* <Select
+                                        showSearch
+                                        placeholder="Select a person"
+                                        filterOption={(input, option) =>
+                                            (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                                        }
+                                        options={[
+                                            { value: '1', label: 'Jack' },
+                                            { value: '2', label: 'Lucy' },
+                                            { value: '3', label: 'Tom' },
+                                        ]}
+                                    /> */}
                                 </Form.Item>
                             </Col>
                         </Row>
