@@ -6,6 +6,7 @@ export const apiRoutes = {
     // For User Like Consumer, Admin, Manager
     getAllUserList: '/users/getUserList',
     createUser: '/auth/createUser',
+    updateUser: '/users/updateUser',
 
 
     // For Tenants Like Restaurant, Hotel, etc

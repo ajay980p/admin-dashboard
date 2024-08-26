@@ -8,10 +8,11 @@ interface UserDrawerProps {
     showDrawer: boolean;
     handleDrawer: () => void;
     form: any;
+    isEditMode: boolean;
     children: React.ReactNode;
 }
 
-const UserDrawer: React.FC<UserDrawerProps> = ({ title, width, showDrawer, handleDrawer, form, children }) => {
+const UserDrawer: React.FC<UserDrawerProps> = ({ title, width, showDrawer, handleDrawer, form, isEditMode, children }) => {
     return (
         <>
             <Drawer
@@ -30,7 +31,7 @@ const UserDrawer: React.FC<UserDrawerProps> = ({ title, width, showDrawer, handl
                 }
             >
                 <Form layout="vertical" form={form}>
-                    <UserForm />
+                    <UserForm isEditMode={isEditMode} />
                 </Form>
             </Drawer>
         </>

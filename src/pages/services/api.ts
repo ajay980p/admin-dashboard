@@ -1,4 +1,4 @@
-import { TenantData, UserData } from "../../utils/types";
+import { TenantData, updateUserDataInterface, UserData } from "../../utils/types";
 import { apiRoutes } from "./apiRoutes";
 import { api } from "./axios"
 
@@ -33,6 +33,13 @@ export const getAllUserList = async (reqData: { currentPage: number, pageSize: n
 // To Create New User
 export const createNewUser = async (userData: UserData) => {
     const response = await api.post(apiRoutes.createUser, userData)
+    return response;
+}
+
+
+// To Create New User
+export const updateUserData = async (userData: updateUserDataInterface) => {
+    const response = await api.post(apiRoutes.updateUser, userData)
     return response;
 }
 

@@ -17,3 +17,12 @@ export type TenantData = {
     mailId: string
     address: string
 }
+
+export interface updateUserDataInterface {
+    userId: number;
+    firstName: string;
+    lastName: string;
+    email: string;
+    role: string;
+    tenantId: number;
+}

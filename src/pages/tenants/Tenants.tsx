@@ -140,6 +140,9 @@ const Tenants = () => {
                             setCurrentPage(page);
                             setPageSize(pageSize);
                         },
+                        showTotal: (total, range) => {
+                            return `Showing ${range[0]}-${range[1]} of ${total} items`;
+                        }
                     }}
                 />
             </div>

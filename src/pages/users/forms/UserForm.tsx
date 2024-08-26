@@ -11,17 +11,15 @@ const getTenants = async (pageData: { currentPage: number, pageSize: number }) =
     });
     return response.data;
 }
-const UserForm = () => {
+const UserForm = ({ isEditMode = false }: { isEditMode: boolean }) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(2);
 
     // Using useQuery to fetch the list of Tenants
-    const { data: tenants, isLoading: isTenantsLoading, refetch, isFetching: isTenantsDataFetching } = useQuery({
+    const { data: tenants } = useQuery({
         queryKey: ["tenants"],
         queryFn: () => getTenants({ currentPage, pageSize }),
     });
-
-
 
     return (
         <>
@@ -74,7 +72,7 @@ const UserForm = () => {
                     </Card>
                 </Col>
 
-                <Col span={24} style={{ marginTop: 24 }}>
+                {!isEditMode && <Col span={24} style={{ marginTop: 24 }}>
                     <Card title="Security Info" bordered={false} >
                         <Row gutter={16}>
                             <Col span={12}>
@@ -109,6 +107,7 @@ const UserForm = () => {
                         </Row>
                     </Card>
                 </Col>
+                }
 
                 <Col span={24} style={{ marginTop: 24 }}>
                     <Card title="Roles" bordered={false} >
@@ -142,7 +141,7 @@ const UserForm = () => {
                                         showSearch
                                         placeholder="Select Restaurant"
                                         filterOption={(input, option) =>
-                                            String(option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                                            typeof option?.label === 'string' && option.label.toLowerCase().includes(input.toLowerCase())
                                         }
                                         style={{ width: '100%' }}
                                         options={tenants?.tenantsData.map((tenant: { id: number; name: string }) => ({
@@ -150,19 +149,6 @@ const UserForm = () => {
                                             value: tenant.id
                                         }))}
                                     />
-
-                                    {/* <Select
-                                        showSearch
-                                        placeholder="Select a person"
-                                        filterOption={(input, option) =>
-                                            (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-                                        }
-                                        options={[
-                                            { value: '1', label: 'Jack' },
-                                            { value: '2', label: 'Lucy' },
-                                            { value: '3', label: 'Tom' },
-                                        ]}
-                                    /> */}
                                 </Form.Item>
                             </Col>
                         </Row>

@@ -27,11 +27,12 @@ const Dashboard = () => {
         mutationFn: logoutUserFuntion,
         onSuccess: () => {
             logoutFromStore();
+            <Navigate to={`/auth/login`} replace={true} />;
         }
     });
 
     if (user === null) {
-        return <Navigate to="/auth/login" replace={true} />;
+        return <Navigate to={`/auth/login?returnTo=${location.pathname}`} replace={true} />;
     }
 
     const { token: { colorBgContainer, borderRadiusLG } } = theme.useToken();
