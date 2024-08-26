@@ -1,3 +1,4 @@
+import { UserData } from "../../utils/types";
 import { apiRoutes } from "./apiRoutes";
 import { api } from "./axios"
 
@@ -33,5 +34,11 @@ export const getAllUserList = async () => {
 // To Get all Tenants List
 export const getAllTenantsList = async () => {
     const response = await api.post(apiRoutes.getAllTenantsList, '')
+    return response;
+}
+
+// To Create New User
+export const createNewUser = async (userData: UserData) => {
+    const response = await api.post(apiRoutes.createUser, userData)
     return response;
 }

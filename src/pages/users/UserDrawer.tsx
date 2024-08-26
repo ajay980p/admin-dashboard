@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Drawer, Form, Space } from 'antd';
+import { Drawer, Form, Space } from 'antd';
 import UserForm from './forms/UserForm';
 
 interface UserDrawerProps {
@@ -21,7 +21,6 @@ const UserDrawer: React.FC<UserDrawerProps> = ({ title, width, showDrawer, handl
                 destroyOnClose={true}
                 open={showDrawer}
                 style={{
-                    paddingBottom: 80,
                     backgroundColor: '#f5f5f5',
                 }}
                 extra={

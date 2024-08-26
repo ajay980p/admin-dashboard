@@ -1,11 +1,9 @@
-import { Button, Card, Col, Input, Row, Select } from "antd"
-import { PlusOutlined, SearchOutlined } from '@ant-design/icons'
+import { Card, Col, Input, Row, Select } from "antd"
 
 interface UserFilterProps {
     children: React.ReactNode;
-    handleDrawer: () => void;
 }
-const UserFilter: React.FC<UserFilterProps> = ({ handleDrawer, children }) => {
+const UserFilter: React.FC<UserFilterProps> = ({ children }) => {
     return (
         <Card>
 

@@ -1,4 +1,5 @@
 import { Card, Col, Form, Input, Row, Select } from 'antd'
+import { Roles } from '../../../utils/constant';
 
 const UserForm = () => {
     return (
@@ -31,12 +32,15 @@ const UserForm = () => {
                                 <Form.Item
                                     name="email"
                                     label="Email"
-                                    rules={[{ required: true, message: 'Please enter Email' }]}
+                                    rules={[
+                                        { required: true, message: 'Please enter Email' },
+                                        { type: 'email', message: 'Please enter a valid email' }
+                                    ]}
                                 >
-                                    <Input size='large' type='email' />
+                                    <Input size='large' />
                                 </Form.Item>
                             </Col>
-                            <Col span={12}>
+                            {/* <Col span={12}>
                                 <Form.Item
                                     name="phone"
                                     label="Phone Number"
@@ -44,7 +48,7 @@ const UserForm = () => {
                                 >
                                     <Input size='large' type='number' />
                                 </Form.Item>
-                            </Col>
+                            </Col> */}
                         </Row>
                     </Card>
                 </Col>
@@ -58,16 +62,27 @@ const UserForm = () => {
                                     label="Password"
                                     rules={[{ required: true, message: 'Please enter Password' }]}
                                 >
-                                    <Input size='large' type='password' />
+                                    <Input.Password size='large' />
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
                                 <Form.Item
                                     name="confirmPassword"
                                     label="Confirm Password"
-                                    rules={[{ required: true, message: 'Please enter Confirm Password' }]}
+                                    dependencies={['password']}
+                                    rules={[
+                                        { required: true, message: 'Please confirm your password' },
+                                        ({ getFieldValue }) => ({
+                                            validator(_, value) {
+                                                if (!value || getFieldValue('password') === value) {
+                                                    return Promise.resolve();
+                                                }
+                                                return Promise.reject(new Error('The two passwords do not match'));
+                                            },
+                                        }),
+                                    ]}
                                 >
-                                    <Input size='large' type='password' />
+                                    <Input.Password size='large' />
                                 </Form.Item>
                             </Col>
                         </Row>
@@ -79,6 +94,7 @@ const UserForm = () => {
                         <Row gutter={16}>
                             <Col span={12}>
                                 <Form.Item
+                                    name="role"
                                     label="Select Role"
                                     rules={[{ required: true, message: 'Please select Role' }]}
                                 >
@@ -86,17 +102,17 @@ const UserForm = () => {
                                         size='large'
                                         placeholder="Select Role"
                                         style={{ width: '100%' }}
-                                        // onChange={handleChange}
                                         options={[
-                                            { id: 1, value: 'admin', label: 'Admin' },
-                                            { id: 2, value: 'manager', label: 'Manager' },
-                                            { id: 3, value: 'customer', label: 'Customer' },
+                                            { id: 1, value: Roles.ADMIN, label: 'Admin' },
+                                            { id: 2, value: Roles.MANAGER, label: 'Manager' },
+                                            { id: 3, value: Roles.CONSUMER, label: 'Customer' },
                                         ]}
                                     />
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
                                 <Form.Item
+                                    name="restaurant"
                                     label="Select Restaurant"
                                     rules={[{ required: true, message: 'Please select Restaurant' }]}
                                 >
@@ -104,7 +120,6 @@ const UserForm = () => {
                                         size='large'
                                         placeholder="Select Restaurant"
                                         style={{ width: '100%' }}
-                                        // onChange={handleChange}
                                         options={[
                                             { value: 'jack', label: 'Jack' },
                                             { value: 'lucy', label: 'Lucy' },
@@ -117,7 +132,6 @@ const UserForm = () => {
                         </Row>
                     </Card>
                 </Col>
-
             </Row>
         </>
     )
