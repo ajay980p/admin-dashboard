@@ -9,6 +9,7 @@ export type UserData = {
     email: string
     password: string,
     role: string
+    tenantId: number
 }
 
 

@@ -66,6 +66,7 @@ const submitUser = async (userData: UserData) => {
         email: userData.email,
         password: userData.password,
         role: userData.role,
+        tenantId: userData.tenantId
     });
     return response.data;
 };
@@ -164,7 +165,7 @@ const Users = () => {
                     ...values, userId: currentEditingUser?.userId, tenantId: values?.restaurant
                 });
             } else {
-                submitUserMutation(values);
+                submitUserMutation({ ...values, tenantId: values?.restaurant });
             }
         } catch (errorInfo) {
             console.log("Validation Failed:");
@@ -191,7 +192,7 @@ const Users = () => {
                         },
                     ]}
                 />
-                {isUserDataFetching && <Spin indicator={<LoadingOutlined spin />} size="large" />}
+                {isUserDataFetching && <Spin indicator={<LoadingOutlined spin />} />}
             </Flex>
 
             <div style={{ marginTop: 20 }}>
