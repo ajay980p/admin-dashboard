@@ -13,9 +13,8 @@ const UserFilter: React.FC<UserFilterProps> = ({ formFilter, handleValuesChange,
                 <Row justify={'space-between'}>
                     <Col>
                         <Row gutter={16}>
-
                             <Col>
-                                <Form.Item name="search">
+                                <Form.Item name="search" style={{ margin: 0 }}>
                                     <Input.Search
                                         placeholder="Search User"
                                     />
@@ -23,7 +22,7 @@ const UserFilter: React.FC<UserFilterProps> = ({ formFilter, handleValuesChange,
                             </Col>
 
                             <Col>
-                                <Form.Item name="role">
+                                <Form.Item name="role" style={{ margin: 0 }}>
                                     <Select
                                         showSearch
                                         allowClear

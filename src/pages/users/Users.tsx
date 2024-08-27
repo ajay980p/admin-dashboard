@@ -1,6 +1,6 @@
 import { Breadcrumb, Button, Flex, Form, Spin, Table } from "antd";
 import { RightOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { createNewUser, getAllUserList, updateUserData } from "../services/api";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import LoadingSpinner from "../sharedComponent/LoadingSpinner";
@@ -10,6 +10,7 @@ import UserDrawer from "./UserDrawer";
 import { PlusOutlined, LoadingOutlined } from "@ant-design/icons";
 import { updateUserDataInterface, UserData } from "../../utils/types";
 import { debounce } from "lodash";
+import { useAuthStore } from "../../utils/store";
 
 const columns = [
     {
@@ -87,6 +88,7 @@ interface extendedUserData extends UserData {
     tenantName: string;
 }
 const Users = () => {
+    const { user } = useAuthStore();
     const [showDrawer, setShowDrawer] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [currentEditingUser, setCurrentEditingUser] = useState<extendedUserData | null>(null);
@@ -94,6 +96,10 @@ const Users = () => {
     const [filters, setFilters] = useState<any>({});
     const [form] = Form.useForm();
     const [form1] = Form.useForm();
+
+    if (user?.role !== "admin") {
+        return <Navigate to="/" />
+    }
 
     // Using useQuery to fetch the list of users
     const { data: users, isLoading: isUsersLoading, refetch, isFetching: isUserDataFetching } = useQuery({

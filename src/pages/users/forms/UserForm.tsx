@@ -14,6 +14,7 @@ const getTenants = async (pageData: { currentPage: number, pageSize: number }) =
 const UserForm = ({ isEditMode = false }: { isEditMode: boolean }) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(2);
+    const selectedRole = Form.useWatch('role');
 
     // Using useQuery to fetch the list of Tenants
     const { data: tenants } = useQuery({
@@ -120,17 +121,20 @@ const UserForm = ({ isEditMode = false }: { isEditMode: boolean }) => {
                                 >
                                     <Select
                                         size='large'
+                                        showSearch
+                                        allowClear
                                         placeholder="Select Role"
                                         style={{ width: '100%' }}
                                         options={[
                                             { id: 1, value: Roles.ADMIN, label: 'Admin' },
                                             { id: 2, value: Roles.MANAGER, label: 'Manager' },
-                                            { id: 3, value: Roles.CONSUMER, label: 'Customer' },
+                                            { id: 3, value: Roles.CONSUMER, label: 'Consumer' }
                                         ]}
                                     />
                                 </Form.Item>
                             </Col>
-                            <Col span={12}>
+
+                            {(selectedRole === Roles.MANAGER) && <Col span={12}>
                                 <Form.Item
                                     name="restaurant"
                                     label="Select Restaurant"
@@ -139,6 +143,7 @@ const UserForm = ({ isEditMode = false }: { isEditMode: boolean }) => {
                                     <Select
                                         size='large'
                                         showSearch
+                                        allowClear
                                         placeholder="Select Restaurant"
                                         filterOption={(input, option) =>
                                             typeof option?.label === 'string' && option.label.toLowerCase().includes(input.toLowerCase())
@@ -150,7 +155,8 @@ const UserForm = ({ isEditMode = false }: { isEditMode: boolean }) => {
                                         }))}
                                     />
                                 </Form.Item>
-                            </Col>
+                            </Col>}
+
                         </Row>
                     </Card>
                 </Col>

@@ -13,6 +13,55 @@ import { useMutation } from '@tanstack/react-query';
 import { logout } from '../pages/services/api';
 
 
+const getMenuItems = (role: string) => {
+    const baseItems = [
+        {
+            key: "/",
+            icon: <HomeOutlined />,
+            label: <NavLink to="/" style={{ color: 'black' }}>Home</NavLink>
+        },
+        {
+            key: "/tenants",
+            icon: <CoffeeOutlined />,
+            label: <NavLink to="/tenants" style={{ color: 'black' }}>Restaurants</NavLink>
+        },
+        {
+            key: '/menu',
+            icon: <MenuOutlined />,
+            label: <NavLink to="/menu" style={{ color: 'black' }}>Menu</NavLink>
+        },
+        {
+            key: '/orders',
+            icon: <ShoppingOutlined />,
+            label: <NavLink to="/orders" style={{ color: 'black' }}>Orders</NavLink>
+        },
+        {
+            key: '/sales',
+            icon: <Icon component={Sales} />,
+            label: <NavLink to="/sales" style={{ color: 'black' }}>Sales</NavLink>
+        },
+        {
+            key: '/promos',
+            icon: <Icon component={Promocode} />,
+            label: <NavLink to="/promos" style={{ color: 'black' }}>Promos</NavLink>
+        },
+    ]
+
+    if (role === 'admin') {
+        const menus = [...baseItems]
+
+        menus.splice(1, 0, {
+            key: "/users",
+            icon: <UserOutlined />,
+            label:
+                <NavLink to="/users" style={{ color: 'black' }}>Users</NavLink>
+        },)
+
+        return menus;
+    }
+    return baseItems;
+}
+
 const logoutUserFuntion = async () => {
     const { data } = await logout();
     return data;
@@ -20,6 +69,7 @@ const logoutUserFuntion = async () => {
 const Dashboard = () => {
     const { logoutFromStore, user } = useAuthStore();
     const [collapsed, setCollapsed] = useState(false);
+    const items = getMenuItems(user?.role as string);
     const location = useLocation();
 
     const { mutate: logoutUser } = useMutation({
@@ -37,46 +87,6 @@ const Dashboard = () => {
 
     const { token: { colorBgContainer, borderRadiusLG } } = theme.useToken();
 
-    const items = [
-        {
-            key: "/",
-            icon: <HomeOutlined />,
-            label: <NavLink to="/" style={{ color: 'black' }}>Home</NavLink>
-        },
-        {
-            key: "/users",
-            icon: <UserOutlined />,
-            label:
-                <NavLink to="/users" style={{ color: 'black' }}>Users</NavLink>
-        },
-        {
-            key: "/tenants",
-            icon: <CoffeeOutlined />,
-            label:
-                <NavLink to="/tenants" style={{ color: 'black' }}>Restaurants</NavLink>
-        },
-        {
-            key: '/menu',
-            icon: <MenuOutlined />,
-            label: 'Menu',
-        },
-        {
-            key: '/orders',
-            icon: <ShoppingOutlined />,
-            label: 'Orders',
-        },
-        {
-            key: '/sales',
-            icon: <Icon component={Sales} />,
-            label: 'Sales',
-        },
-        {
-            key: '/promos',
-            icon: <Icon component={Promocode} />,
-            label: 'Promos',
-        },
-    ]
-
     return (
         <Layout style={{ minHeight: '100vh' }}>
             <Sider trigger={null} theme='light' collapsible collapsed={collapsed}>
@@ -87,7 +97,7 @@ const Dashboard = () => {
                 <Menu
                     theme="light"
                     mode="inline"
-                    defaultSelectedKeys={[location.pathname]}
+                    selectedKeys={[location.pathname]}
                     items={items}
                 />
             </Sider>
@@ -105,7 +115,7 @@ const Dashboard = () => {
                                 height: 64,
                             }}
                         /> */}
-                        <Badge text="Admin" status='success' />
+                        <Badge text={user.role === "admin" ? "You are an Admin" : `${user.firstName} ${user.lastName}`} status='success' />
                         <Space>
                             <Space style={{ paddingRight: '15px' }}>
                                 <Badge dot={true} >
@@ -135,7 +145,7 @@ const Dashboard = () => {
                         margin: '20px 16px',
                         padding: 24,
                         // minHeight: '78vh',
-                        background: colorBgContainer,
+                        backgroundColor: '#f5f5f5',
                         borderRadius: borderRadiusLG,
                     }}
                 >

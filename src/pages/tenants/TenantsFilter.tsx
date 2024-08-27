@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, Col, Input, Row } from "antd"
+import { Card, Col, Form, Input, Row } from "antd"
 
 
 interface TenantsFilterProps {
@@ -13,9 +13,11 @@ const TenantsFilter: React.FC<TenantsFilterProps> = ({ children }) => {
                 <Col>
                     <Row gutter={16}>
                         <Col>
-                            <Input.Search
-                                placeholder="Search Tenant"
-                            />
+                            <Form.Item name="search" style={{ margin: 0 }}>
+                                <Input.Search
+                                    placeholder="Search Tenant"
+                                />
+                            </Form.Item>
                         </Col>
                     </Row>
                 </Col>
