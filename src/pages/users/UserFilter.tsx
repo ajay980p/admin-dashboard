@@ -16,13 +16,17 @@ const UserFilter: React.FC<UserFilterProps> = ({ formFilter, handleValuesChange,
 
                             <Col>
                                 <Form.Item name="search">
-                                    <Input.Search placeholder="Search User" />
+                                    <Input.Search
+                                        placeholder="Search User"
+                                    />
                                 </Form.Item>
                             </Col>
 
                             <Col>
                                 <Form.Item name="role">
                                     <Select
+                                        showSearch
+                                        allowClear
                                         style={{ width: 120 }}
                                         placeholder="Select Role"
                                         options={[
