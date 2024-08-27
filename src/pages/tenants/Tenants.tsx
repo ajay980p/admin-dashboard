@@ -58,6 +58,7 @@ const Tenants = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
     const [showDrawer, setShowDrawer] = useState(false);
+    const [currentEditingTenant, setCurrentEditingTenant] = useState(null);
 
     // Using useQuery to fetch the list of Tenants
     const { data: tenants, isLoading: isTenantsLoading, refetch, isFetching: isTenantsDataFetching } = useQuery({
@@ -75,6 +76,14 @@ const Tenants = () => {
             refetch();
         },
     });
+
+    useEffect(() => {
+        if (currentEditingTenant) {
+
+        }
+    }, [currentEditingTenant]);
+
+    console.log("Tenants data : ", tenants);
 
     useEffect(() => {
         refetch();
@@ -130,8 +139,16 @@ const Tenants = () => {
 
             <div style={{ marginTop: 20 }}>
                 <Table
-                    dataSource={tenants.tenantsData}
-                    columns={columns}
+                    dataSource={tenants?.tenantsData ? tenants?.tenantsData : []}
+                    columns={[...columns,
+                    {
+                        title: "Action",
+                        render: (text: string, record: any) => {
+                            return (
+                                <Button onClick={() => setCurrentEditingTenant(record)}>Edit</Button>
+                            );
+                        }
+                    }]}
                     pagination={{
                         total: tenants?.totalRecords,
                         current: currentPage,

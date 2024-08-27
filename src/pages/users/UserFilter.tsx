@@ -1,35 +1,40 @@
-import { Card, Col, Input, Row, Select } from "antd"
+import { Card, Col, Form, Input, Row, Select } from "antd"
+import { Roles } from "../../utils/constant";
 
 interface UserFilterProps {
+    formFilter: any;
+    handleValuesChange: (changedValues: any, allValues: any) => void;
     children: React.ReactNode;
 }
-const UserFilter: React.FC<UserFilterProps> = ({ children }) => {
+const UserFilter: React.FC<UserFilterProps> = ({ formFilter, handleValuesChange, children }) => {
     return (
-        <Card>
+        <Form form={formFilter} onValuesChange={handleValuesChange} layout="vertical">
+            <Card>
+                <Row justify={'space-between'}>
+                    <Col>
+                        <Row gutter={16}>
 
-            <Row justify={'space-between'}>
-                <Col>
-                    <Row gutter={16}>
-                        <Col>
-                            <Input.Search
-                                placeholder="Search User"
-                            />
-                        </Col>
-                        <Col>
-                            <Select
-                                placeholder="User"
-                                style={{ width: 120 }}
-                                // onChange={handleChange}
-                                options={[
-                                    { id: 1, value: 'jack', label: 'Jack' },
-                                    { id: 2, value: 'lucy', label: 'Lucy' },
-                                    { id: 3, value: 'Yiminghe', label: 'yiminghe' },
-                                    { id: 4, value: 'disabled', label: 'Disabled' },
-                                ]}
-                            />
-                        </Col>
+                            <Col>
+                                <Form.Item name="search">
+                                    <Input.Search placeholder="Search User" />
+                                </Form.Item>
+                            </Col>
 
-                        <Col>
+                            <Col>
+                                <Form.Item name="role">
+                                    <Select
+                                        style={{ width: 120 }}
+                                        placeholder="Select Role"
+                                        options={[
+                                            { id: 1, value: Roles.ADMIN, label: 'Admin' },
+                                            { id: 2, value: Roles.MANAGER, label: 'Manager' },
+                                            { id: 3, value: Roles.CONSUMER, label: 'Customer' },
+                                        ]}
+                                    />
+                                </Form.Item>
+                            </Col>
+
+                            {/* <Col>
                             <Select
                                 placeholder="Status"
                                 style={{ width: 120 }}
@@ -39,15 +44,17 @@ const UserFilter: React.FC<UserFilterProps> = ({ children }) => {
                                     { id: 2, value: 'inActive', label: 'Inactive' },
                                 ]}
                             />
-                        </Col>
-                    </Row>
-                </Col>
+                        </Col> */}
 
-                <Col>
-                    {children}
-                </Col>
-            </Row>
-        </Card>
+                        </Row>
+                    </Col>
+
+                    <Col>
+                        {children}
+                    </Col>
+                </Row>
+            </Card>
+        </Form>
     )
 }
 

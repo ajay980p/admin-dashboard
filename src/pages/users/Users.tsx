@@ -9,6 +9,7 @@ import UserFilter from "./UserFilter";
 import UserDrawer from "./UserDrawer";
 import { PlusOutlined, LoadingOutlined } from "@ant-design/icons";
 import { updateUserDataInterface, UserData } from "../../utils/types";
+import { debounce } from "lodash";
 
 const columns = [
     {
@@ -17,9 +18,14 @@ const columns = [
         render: (text: string, record: any, index: number) => index + 1,
     },
     {
-        title: "User Name",
-        key: "name",
-        render: (text: string, record: any) => `${record.firstName} ${record.lastName}`,
+        title: "First Name",
+        dataIndex: "firstName",
+        key: "firstName",
+    },
+    {
+        title: "Last Name",
+        dataIndex: "lastName",
+        key: "lastName",
     },
     {
         title: "Email",
@@ -43,10 +49,12 @@ const columns = [
     },
 ];
 
-const getUsers = async (pageData: { currentPage: number, pageSize: number }) => {
+const getUsers = async (pageData: { currentPage: number, pageSize: number, search: string, role: string }) => {
     const response = await getAllUserList({
         currentPage: pageData.currentPage,
         pageSize: pageData.pageSize,
+        search: pageData.search,
+        searchRole: pageData.role
     });
     return response.data;
 };
@@ -82,12 +90,19 @@ const Users = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [currentEditingUser, setCurrentEditingUser] = useState<extendedUserData | null>(null);
     const [pageSize, setPageSize] = useState(10);
+    const [filters, setFilters] = useState<any>({});
     const [form] = Form.useForm();
+    const [form1] = Form.useForm();
 
     // Using useQuery to fetch the list of users
     const { data: users, isLoading: isUsersLoading, refetch, isFetching: isUserDataFetching } = useQuery({
         queryKey: ["users"],
-        queryFn: () => getUsers({ currentPage, pageSize }),
+        queryFn: () => getUsers({
+            currentPage,
+            pageSize,
+            search: filters.search ? filters.search : "",
+            role: filters.role ? filters.role : ""
+        }),
     });
 
     // Using useMutation to handle user submission
@@ -114,7 +129,7 @@ const Users = () => {
 
     useEffect(() => {
         refetch();
-    }, [currentPage, pageSize]);
+    }, [currentPage, pageSize, filters]);
 
     useEffect(() => {
         if (currentEditingUser) {
@@ -156,6 +171,12 @@ const Users = () => {
         }
     };
 
+    // Handle form value changes
+    const handleValuesChange = debounce((changedValues: any, allValues: any) => {
+        setCurrentPage(1);
+        setFilters(allValues);
+    }, 500);
+
     return (
         <>
             <Flex justify="space-between" align="center">
@@ -173,9 +194,8 @@ const Users = () => {
                 {isUserDataFetching && <Spin indicator={<LoadingOutlined spin />} size="large" />}
             </Flex>
 
-
             <div style={{ marginTop: 20 }}>
-                <UserFilter>
+                <UserFilter formFilter={form1} handleValuesChange={handleValuesChange}>
                     <Button type="primary" icon={<PlusOutlined />} onClick={() => {
                         setShowDrawer(true)
                         setCurrentEditingUser(null)
