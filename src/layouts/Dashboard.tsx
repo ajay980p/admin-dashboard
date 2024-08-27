@@ -1,4 +1,4 @@
-import { Navigate, NavLink, Outlet, useLocation } from 'react-router-dom'
+import { Navigate, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../utils/store';
 import { Content, Footer, Header } from 'antd/es/layout/layout';
 import Sider from 'antd/es/layout/Sider';
@@ -10,7 +10,7 @@ import Sales from '../pages/sharedComponent/icons/Sales';
 import Promocode from '../pages/sharedComponent/icons/Promocode';
 import MenuIcon from '../pages/sharedComponent/icons/MenuIcon';
 import { useMutation } from '@tanstack/react-query';
-import { logout } from '../pages/services/api';
+import { logout } from '../pages/services/api/UserApi';
 
 
 const getMenuItems = (role: string) => {
@@ -71,13 +71,14 @@ const Dashboard = () => {
     const [collapsed, setCollapsed] = useState(false);
     const items = getMenuItems(user?.role as string);
     const location = useLocation();
+    const navigate = useNavigate();
 
     const { mutate: logoutUser } = useMutation({
         mutationKey: ['logout'],
         mutationFn: logoutUserFuntion,
         onSuccess: () => {
             logoutFromStore();
-            <Navigate to={`/auth/login`} replace={true} />;
+            navigate('/auth/login');
         }
     });
 

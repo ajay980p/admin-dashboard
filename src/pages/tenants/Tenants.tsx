@@ -1,7 +1,6 @@
 import { Breadcrumb, Button, Flex, Form, Spin, Table } from "antd"
 import { RightOutlined } from "@ant-design/icons"
 import { Link } from "react-router-dom"
-import { createNewTenant, getAllTenantsList } from "../services/api";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import LoadingSpinner from "../sharedComponent/LoadingSpinner";
 import { useEffect, useState } from "react";
@@ -9,6 +8,7 @@ import TenantsFilter from "./TenantsFilter";
 import TenantsDrawer from "./TenantsDrawer";
 import { PlusOutlined, LoadingOutlined } from '@ant-design/icons';
 import { TenantData } from "../../utils/types";
+import { createNewTenant, getAllTenantsList } from "../services/api/TenantApi";
 
 const columns = [
     {

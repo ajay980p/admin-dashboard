@@ -2,9 +2,9 @@ import { Alert, Button, Card, Checkbox, Flex, Form, Input, Layout, Space } from 
 import { LockFilled, UserOutlined, LockOutlined } from "@ant-design/icons"
 import { useMutation, useQuery } from '@tanstack/react-query'
 // import { Credentials } from '../Types'
-import { login, logout, self } from '../services/api'
 import { useAuthStore } from '../../utils/store'
 import { userPermission } from '../../hooks/userPermission'
+import { login, logout, self } from '../services/api/UserApi'
 // import Logo from "../../assets/icons/pizza-logo.svg"
 
 const loginUser = async (userData: { email: string, password: string }) => {
