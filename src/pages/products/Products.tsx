@@ -85,15 +85,15 @@ const Products = () => {
 
     const handleDrawerForm = async () => {
         try {
-
             const isFormEditMode = !!currentEditingProduct;
-            // const values = await form.validateFields();
+            const values = await form.validateFields();
             if (isFormEditMode) {
                 // updateUserMutation({
                 //     ...values, userId: currentEditingProduct?.userId, tenantId: values?.restaurant
                 // });
             } else {
                 // submitUserMutation({ ...values, tenantId: values?.restaurant });
+                console.log("Form is submitting : ", form.getFieldsValue());
             }
         } catch (errorInfo) {
             console.log("Validation Failed:");
@@ -158,7 +158,7 @@ const Products = () => {
                         }
                     }
                     ]}
-                    rowKey="id"
+                    rowKey={products?._id}
                 />
             </div>
         </>

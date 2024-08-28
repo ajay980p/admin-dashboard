@@ -6,10 +6,18 @@ import Pricing from './Pricing';
 import Attributes from './Attributes';
 import { useQuery } from '@tanstack/react-query';
 import { getCategoryList } from '../../../services/api/CategoryApi';
+import { getAllTenantsList } from '../../../services/api/TenantApi';
 
 
 const getCategory = async () => {
     const response = await getCategoryList();
+    return response.data;
+}
+const getTenants = async (pageData: { currentPage: number, pageSize: number }) => {
+    const response = await getAllTenantsList({
+        currentPage: pageData.currentPage,
+        pageSize: pageData.pageSize,
+    });
     return response.data;
 }
 const ProductForm = ({ isEditMode = false }: { isEditMode: boolean }) => {
@@ -21,6 +29,14 @@ const ProductForm = ({ isEditMode = false }: { isEditMode: boolean }) => {
         queryKey: ["categories"],
         queryFn: getCategory
     });
+
+    // Using useQuery to fetch the list of Tenants
+    const { data: tenants } = useQuery({
+        queryKey: ["tenants"],
+        queryFn: () => getTenants({ currentPage: 1, pageSize: 100 }),
+    });
+
+    console.log("Tenants : ", tenants)
 
     return (
         <>
@@ -103,17 +119,27 @@ const ProductForm = ({ isEditMode = false }: { isEditMode: boolean }) => {
                 </Col>
 
                 <Col span={24} style={{ marginTop: 24 }}>
-                    <Card title="Roles" bordered={false} >
+                    <Card title="Restaurant" bordered={false} >
                         <Row gutter={16}>
                             <Col span={24}>
                                 <Form.Item
                                     name="role"
-                                    label="Select Role"
-                                    rules={[{ required: true, message: 'Please select Role' }]}
+                                    label="Select Restaurant"
+                                    rules={[{ required: true, message: 'Please select Restaurant.' }]}
                                 >
-                                    <Input.Search
-                                        placeholder="Search User"
-                                    />
+                                    <Select
+                                        size="large"
+                                        showSearch
+                                        allowClear
+                                        placeholder="Select Category"
+                                        style={{ width: '100%' }}
+                                    >
+                                        {tenants && tenants?.tenantsData?.map((tenant: any) => (
+                                            <Select.Option key={tenant.id} value={tenant.name}>
+                                                {tenant.name}
+                                            </Select.Option>
+                                        ))}
+                                    </Select>
                                 </Form.Item>
                             </Col>
 
