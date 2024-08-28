@@ -27,3 +27,28 @@ export interface updateUserDataInterface {
     role: string;
     tenantId: number;
 }
+
+
+export interface PriceConfiguration {
+    priceType: string;
+    availableOptions: string[];
+    _id: string;
+}
+
+export interface Attribute {
+    name: string;
+    widgetType: string;
+    defaultValue: string;
+    availableOptions: string[];
+    _id: string;
+}
+
+export interface Category {
+    _id: string;
+    name: string;
+    priceConfiguration: {
+        Size: PriceConfiguration;
+        Crust: PriceConfiguration;
+    };
+    attributes: Attribute[];
+}

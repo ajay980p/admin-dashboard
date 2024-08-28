@@ -2,7 +2,7 @@ import { Breadcrumb, Button, Flex, Form, Spin, Table } from "antd";
 import { RightOutlined } from "@ant-design/icons";
 import { Link, Navigate } from "react-router-dom";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import LoadingSpinner from "../sharedComponent/LoadingSpinner";
+import LoadingSpinner from "../../sharedComponent/LoadingSpinner";
 import { useEffect, useState } from "react";
 import UserFilter from "./UserFilter";
 import UserDrawer from "./UserDrawer";
@@ -10,7 +10,7 @@ import { PlusOutlined, LoadingOutlined } from "@ant-design/icons";
 import { updateUserDataInterface, UserData } from "../../utils/types";
 import { debounce } from "lodash";
 import { useAuthStore } from "../../utils/store";
-import { createNewUser, getAllUserList, updateUserData } from "../services/api/UserApi";
+import { createNewUser, getAllUserList, updateUserData } from "../../services/api/UserApi";
 
 const columns = [
     {

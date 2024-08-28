@@ -2,7 +2,7 @@ import { Card, Col, Form, Input, Row, Select } from 'antd'
 import { Roles } from '../../../utils/constant';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { getAllTenantsList } from '../../services/api/TenantApi';
+import { getAllTenantsList } from '../../../services/api/TenantApi';
 
 const getTenants = async (pageData: { currentPage: number, pageSize: number }) => {
     const response = await getAllTenantsList({

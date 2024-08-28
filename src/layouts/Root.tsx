@@ -2,8 +2,8 @@ import { useQuery } from "@tanstack/react-query"
 import { Outlet } from "react-router-dom"
 import { useAuthStore } from "../utils/store";
 import { useEffect } from "react";
-import LoadingSpinner from "../pages/sharedComponent/LoadingSpinner";
-import { self } from "../pages/services/api/UserApi";
+import LoadingSpinner from "../sharedComponent/LoadingSpinner";
+import { self } from "../services/api/UserApi";
 
 // To check if user is authenticated
 const getSelf = async () => {

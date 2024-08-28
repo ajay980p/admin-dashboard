@@ -6,11 +6,11 @@ import { useState } from 'react';
 import Logo from "../assets/icons/pizza-logo.svg"
 import { Avatar, Badge, Dropdown, Flex, Layout, Menu, Space, theme, Typography } from 'antd';
 import Icon, { UserOutlined, BellFilled, ShoppingOutlined, MenuOutlined, CoffeeOutlined, MenuUnfoldOutlined, MenuFoldOutlined, HomeOutlined } from '@ant-design/icons';
-import Sales from '../pages/sharedComponent/icons/Sales';
-import Promocode from '../pages/sharedComponent/icons/Promocode';
-import MenuIcon from '../pages/sharedComponent/icons/MenuIcon';
+import Sales from '../sharedComponent/icons/Sales';
+import Promocode from '../sharedComponent/icons/Promocode';
+import MenuIcon from '../sharedComponent/icons/MenuIcon';
 import { useMutation } from '@tanstack/react-query';
-import { logout } from '../pages/services/api/UserApi';
+import { logout } from '../services/api/UserApi';
 
 
 const getMenuItems = (role: string) => {
@@ -34,6 +34,11 @@ const getMenuItems = (role: string) => {
             key: '/orders',
             icon: <ShoppingOutlined />,
             label: <NavLink to="/orders" style={{ color: 'black' }}>Orders</NavLink>
+        },
+        {
+            key: '/products',
+            icon: <ShoppingOutlined />,
+            label: <NavLink to="/products" style={{ color: 'black' }}>Products</NavLink>
         },
         {
             key: '/sales',

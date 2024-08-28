@@ -11,6 +11,7 @@ import Menus from "../pages/menus/Menus";
 import Orders from "../pages/orders/Orders";
 import Sales from "../pages/sales/Sales";
 import Promos from "../pages/promos/Promos";
+import Products from "../pages/products/Products";
 
 export const router = createBrowserRouter([
     {
@@ -52,6 +53,10 @@ export const router = createBrowserRouter([
                     {
                         path: "promos",
                         element: <Promos />
+                    },
+                    {
+                        path: "products",
+                        element: <Products />
                     },
                 ]
             },

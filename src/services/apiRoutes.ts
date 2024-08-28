@@ -12,4 +12,13 @@ export const apiRoutes = {
     // For Tenants Like Restaurant, Hotel, etc
     getAllTenantsList: '/tenants/getAllTenantsList',
     createTenant: '/tenants/createTenant',
+
+
+    // For Products
+    getAllProductsList: '/product/getAllProducts',
+    createProduct: '/product/createProduct',
+
+
+    // For Categories
+    getCategoryList: '/category/getAllCategories',
 }
