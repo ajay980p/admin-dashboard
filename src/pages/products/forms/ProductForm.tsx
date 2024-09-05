@@ -1,5 +1,4 @@
 import { Card, Col, Form, Input, Row, Select, Space, Switch, Typography, Upload } from 'antd'
-import { Roles } from '../../../utils/constant';
 import TextArea from 'antd/es/input/TextArea';
 import { CheckOutlined, CloseOutlined, PlusOutlined } from '@ant-design/icons';
 import Pricing from './Pricing';
@@ -20,7 +19,7 @@ const getTenants = async (pageData: { currentPage: number, pageSize: number }) =
     });
     return response.data;
 }
-const ProductForm = ({ isEditMode = false }: { isEditMode: boolean }) => {
+const ProductForm = () => {
     const selectedCategory = Form.useWatch('category');
     const category = selectedCategory ? JSON.parse(selectedCategory) : null;
 

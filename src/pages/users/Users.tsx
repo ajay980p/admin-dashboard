@@ -16,7 +16,7 @@ const columns = [
     {
         title: "Sr. No.",
         dataIndex: "age",
-        render: (text: string, record: any, index: number) => index + 1,
+        render: (_: string, __: any, index: number) => index + 1,
     },
     {
         title: "First Name",
@@ -41,7 +41,7 @@ const columns = [
     {
         title: "Restaurant At",
         dataIndex: "created_at",
-        render: (text: string, record: any) => `${record.tenantName}, ${record.tenantAddress}`,
+        render: (_: string, record: any) => `${record.tenantName}, ${record.tenantAddress}`,
     },
     {
         title: "Created At",
@@ -179,7 +179,7 @@ const Users = () => {
     };
 
     // Handle form value changes
-    const handleValuesChange = debounce((changedValues: any, allValues: any) => {
+    const handleValuesChange = debounce((_: any, allValues: any) => {
         setCurrentPage(1);
         setFilters(allValues);
     }, 500);
@@ -233,7 +233,7 @@ const Users = () => {
                     columns={[...columns,
                     {
                         title: "Action",
-                        render: (text: string, record: any) => {
+                        render: (_: string, record: any) => {
                             return (
                                 <Button onClick={() => setCurrentEditingUser(record)}>Edit</Button>
                             );

@@ -8,11 +8,11 @@ interface ProductDrawerProps {
     handleDrawer: () => void;
     showDrawer: boolean;
     form: any;
-    isEditMode: boolean;
+    // isEditMode: boolean;
     children: React.ReactNode;
 }
 
-const ProductDrawer: React.FC<ProductDrawerProps> = ({ title, width, handleDrawer, showDrawer, form, isEditMode, children }) => {
+const ProductDrawer: React.FC<ProductDrawerProps> = ({ title, width, handleDrawer, showDrawer, form, children }) => {
     return (
         <>
             <Drawer
@@ -31,7 +31,7 @@ const ProductDrawer: React.FC<ProductDrawerProps> = ({ title, width, handleDrawe
                 }
             >
                 <Form layout="vertical" form={form}>
-                    <ProductForm isEditMode={isEditMode} />
+                    <ProductForm />
                 </Form>
             </Drawer>
         </>

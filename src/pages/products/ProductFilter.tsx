@@ -4,7 +4,7 @@ import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
 
 interface ProductFilterProps {
     formFilter: any;
-    handleValuesChange: (changedValues: any, allValues: any) => void;
+    handleValuesChange: (_: any, allValues: any) => void;
     children: React.ReactNode;
 }
 const ProductFilter: React.FC<ProductFilterProps> = ({ formFilter, handleValuesChange, children }) => {

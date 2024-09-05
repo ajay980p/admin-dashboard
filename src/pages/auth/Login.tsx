@@ -3,8 +3,7 @@ import { LockFilled, UserOutlined, LockOutlined } from "@ant-design/icons"
 import { useMutation, useQuery } from '@tanstack/react-query'
 // import { Credentials } from '../Types'
 import { useAuthStore } from '../../utils/store'
-import { userPermission } from '../../hooks/userPermission'
-import { login, logout, self } from '../../services/api/UserApi'
+import { login, self } from '../../services/api/UserApi'
 // import Logo from "../../assets/icons/pizza-logo.svg"
 
 const loginUser = async (userData: { email: string, password: string }) => {
@@ -15,12 +14,12 @@ const getSelf = async () => {
     const { data } = await self();
     return data;
 }
-const logoutUserFuntion = async () => {
-    const { data } = await logout();
-    return data;
-}
+// const logoutUserFuntion = async () => {
+//     const { data } = await logout();
+//     return data;
+// }
 const Login = () => {
-    const { setUser, logoutFromStore } = useAuthStore()
+    const { setUser } = useAuthStore()
 
     const { refetch } = useQuery({
         queryKey: ['self'],
@@ -28,25 +27,19 @@ const Login = () => {
         enabled: false
     })
 
-    const { mutate: logoutUser } = useMutation({
-        mutationKey: ['logout'],
-        mutationFn: logoutUserFuntion,
-        onSuccess: () => {
-            logoutFromStore;
-        }
-    });
+    // const { mutate: logoutUser } = useMutation({
+    //     mutationKey: ['logout'],
+    //     mutationFn: logoutUserFuntion,
+    //     onSuccess: () => {
+    //         logoutFromStore;
+    //     }
+    // });
 
     const { mutate, isPending, isError, error } = useMutation({
         mutationKey: ['login'],
         mutationFn: loginUser,
         onSuccess: (userData) => {
             refetch();
-
-            // if (!userPermission().isAllowed(userData.data)) {
-            //     logoutUser();
-            //     return;
-            // }
-
             setUser(userData.data)
         }
     });

@@ -12,8 +12,8 @@ const getTenants = async (pageData: { currentPage: number, pageSize: number }) =
     return response.data;
 }
 const UserForm = ({ isEditMode = false }: { isEditMode: boolean }) => {
-    const [currentPage, setCurrentPage] = useState(1);
-    const [pageSize, setPageSize] = useState(2);
+    const [currentPage] = useState(1);
+    const [pageSize] = useState(2);
     const selectedRole = Form.useWatch('role');
 
     // Using useQuery to fetch the list of Tenants

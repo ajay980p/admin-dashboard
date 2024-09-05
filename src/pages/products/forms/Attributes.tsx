@@ -1,4 +1,4 @@
-import { Col, Card, Row, Typography, Switch, Radio, Form } from 'antd';
+import { Col, Card, Row, Switch, Radio, Form } from 'antd';
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import { Category } from '../../../utils/types';
 

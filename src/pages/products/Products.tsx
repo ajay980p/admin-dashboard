@@ -13,7 +13,7 @@ const columns = [
         title: "Sr. No.",
         dataIndex: "serialNumber",
         key: "serialNumber",
-        render: (text: string, record: any, index: number) => index + 1,
+        render: (_: any, __: any, index: number) => index + 1,
     },
     {
         title: "Product Name",
@@ -60,33 +60,33 @@ const getProducts = async () => {
     return response.data;
 };
 const Products = () => {
-    const [currentPage, setCurrentPage] = useState(1);
-    const [pageSize, setPageSize] = useState(10);
-    const [filters, setFilters] = useState<any>({});
+    // const [currentPage, setCurrentPage] = useState(1);
+    // const [pageSize, setPageSize] = useState(10);
+    // const [filters, setFilters] = useState<any>({});
     const [showDrawer, setShowDrawer] = useState(false);
     const [currentEditingProduct, setCurrentEditingProduct] = useState(null);
     const [form] = Form.useForm();
     const [formFilter] = Form.useForm();
 
     // Using useQuery to fetch the list of users
-    const { data: products, isLoading: isUsersLoading, refetch, isFetching: isUserDataFetching } = useQuery({
+    const { data: products, isFetching: isUserDataFetching } = useQuery({
         queryKey: ["products"],
         queryFn: getProducts
     });
-
-    const handleValuesChange = (changedValues: any, allValues: any) => {
-        // refetch({ currentPage, pageSize, ...allValues });
-    }
 
     const handleDrawer = () => {
         setShowDrawer(false);
         setCurrentEditingProduct(null);
     };
 
+    const handleValuesChange = () => {
+
+    }
+
     const handleDrawerForm = async () => {
         try {
             const isFormEditMode = !!currentEditingProduct;
-            const values = await form.validateFields();
+            await form.validateFields();
             if (isFormEditMode) {
                 // updateUserMutation({
                 //     ...values, userId: currentEditingProduct?.userId, tenantId: values?.restaurant
@@ -135,7 +135,7 @@ const Products = () => {
                 showDrawer={showDrawer}
                 handleDrawer={handleDrawer}
                 form={form}
-                isEditMode={!!currentEditingProduct}
+            // isEditMode={!!currentEditingProduct}
             >
                 <>
                     <Button onClick={() => setShowDrawer(false)}>Cancel</Button>
@@ -151,7 +151,7 @@ const Products = () => {
                     {
                         title: "Action",
                         key: "action",
-                        render: (text: string, record: any) => {
+                        render: (_: string, record: any) => {
                             return (
                                 <Button danger onClick={() => setCurrentEditingProduct(record)}>Edit</Button>
                             );

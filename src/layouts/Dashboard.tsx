@@ -5,10 +5,9 @@ import Sider from 'antd/es/layout/Sider';
 import { useState } from 'react';
 import Logo from "../assets/icons/pizza-logo.svg"
 import { Avatar, Badge, Dropdown, Flex, Layout, Menu, Space, theme, Typography } from 'antd';
-import Icon, { UserOutlined, BellFilled, ShoppingOutlined, MenuOutlined, CoffeeOutlined, MenuUnfoldOutlined, MenuFoldOutlined, HomeOutlined } from '@ant-design/icons';
+import Icon, { UserOutlined, BellFilled, ShoppingOutlined, MenuOutlined, CoffeeOutlined, HomeOutlined } from '@ant-design/icons';
 import Sales from '../sharedComponent/icons/Sales';
 import Promocode from '../sharedComponent/icons/Promocode';
-import MenuIcon from '../sharedComponent/icons/MenuIcon';
 import { useMutation } from '@tanstack/react-query';
 import { logout } from '../services/api/UserApi';
 
@@ -73,7 +72,7 @@ const logoutUserFuntion = async () => {
 }
 const Dashboard = () => {
     const { logoutFromStore, user } = useAuthStore();
-    const [collapsed, setCollapsed] = useState(false);
+    const [collapsed] = useState(false);
     const items = getMenuItems(user?.role as string);
     const location = useLocation();
     const navigate = useNavigate();
@@ -111,16 +110,6 @@ const Dashboard = () => {
                 <Header style={{ padding: 0, background: colorBgContainer }}>
 
                     <Flex gap="middle" align="start" justify="space-between" style={{ paddingLeft: '16px', paddingRight: '30px' }}>
-                        {/* <Button
-                            type="text"
-                            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-                            onClick={() => setCollapsed(!collapsed)}
-                            style={{
-                                fontSize: '16px',
-                                width: 64,
-                                height: 64,
-                            }}
-                        /> */}
                         <Badge text={user.role === "admin" ? "You are an Admin" : `${user.firstName} ${user.lastName}`} status='success' />
                         <Space>
                             <Space style={{ paddingRight: '15px' }}>

@@ -14,7 +14,7 @@ const columns = [
     {
         title: 'Sr. No.',
         dataIndex: 'age',
-        render: (text: string, record: any, index: number) => index + 1,
+        render: (_: string, __: any, index: number) => index + 1,
     },
     {
         title: 'Name',
@@ -143,7 +143,7 @@ const Tenants = () => {
                     columns={[...columns,
                     {
                         title: "Action",
-                        render: (text: string, record: any) => {
+                        render: (_: any, record: any) => {
                             return (
                                 <Button onClick={() => setCurrentEditingTenant(record)}>Edit</Button>
                             );

@@ -3,7 +3,7 @@ import { Roles } from "../../utils/constant";
 
 interface UserFilterProps {
     formFilter: any;
-    handleValuesChange: (changedValues: any, allValues: any) => void;
+    handleValuesChange: (_: any, allValues: any) => void;
     children: React.ReactNode;
 }
 const UserFilter: React.FC<UserFilterProps> = ({ formFilter, handleValuesChange, children }) => {
