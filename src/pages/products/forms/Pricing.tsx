@@ -29,7 +29,7 @@ const Pricing: React.FC<Props> = ({ category }) => {
                                                         style={{ width: '100%' }}
                                                     >
                                                         <Form.Item
-                                                            name={['priceConfiguration', configurationKey?.toLocaleLowerCase(), 'availableOptions', option]}
+                                                            name={['priceConfiguration', configurationKey?.toLocaleLowerCase(), 'availableOptions', price]}
                                                             label={price}
                                                             rules={[
                                                                 {

@@ -63,23 +63,10 @@ const getProducts = async () => {
 const submitProduct = async (values: any) => {
     const products = new FormData();
 
-    const product = {
-        name: values.name,
-        description: values.description,
-        priceConfiguration: values.priceConfiguration,
-        attributes: values.attributes,
-        tenantId: values.tenantId,
-        categoryId: values.categoryId,
-        isPublished: values.isPublished,
-        image: values.image?.fileList?.[0]?.originFileObj,
-    };
-
-    console.log("Values : ", product);
-
     products.append("name", values.name);
     products.append("description", values.description);
-    products.append("priceConfiguration", values.priceConfiguration);
-    products.append("attributes", values.attributes);
+    products.append("priceConfiguration", JSON.stringify(values.priceConfiguration));
+    products.append("attributes", JSON.stringify(values.attributes));
     products.append("tenantId", values.tenantId);
     products.append("categoryId", values.categoryId);
     products.append("isPublished", values.isPublished);
