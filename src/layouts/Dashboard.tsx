@@ -35,6 +35,11 @@ const getMenuItems = (role: string) => {
             label: <NavLink to="/orders" style={{ color: 'black' }}>Orders</NavLink>
         },
         {
+            key: '/categories',
+            icon: <ShoppingOutlined />,
+            label: <NavLink to="/categories" style={{ color: 'black' }}>Category</NavLink>
+        },
+        {
             key: '/products',
             icon: <ShoppingOutlined />,
             label: <NavLink to="/products" style={{ color: 'black' }}>Products</NavLink>

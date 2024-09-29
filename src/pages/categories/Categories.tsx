@@ -1,13 +1,12 @@
 import { useState } from 'react'
-import { Breadcrumb, Button, Flex, Form, Spin, Table, Tag, Typography } from 'antd'
-import { LoadingOutlined, RightOutlined, PlusOutlined } from '@ant-design/icons'
-import { createNewProduct, getAllProductsList } from '../../services/api/ProductApi';
+import { Breadcrumb, Button, Flex, Form, Table, Tag, Typography } from 'antd'
+import { RightOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import ProductFilter from './ProductFilter';
+import { useQuery } from '@tanstack/react-query';
 import { format } from 'date-fns';
-import ProductDrawer from './ProductDrawer';
-import LoadingSpinner from '../../sharedComponent/LoadingSpinner';
+import { getCategoryList } from '../../services/api/CategoryApi';
+import ProductFilter from '../products/ProductFilter';
+import { PlusOutlined } from '@ant-design/icons';
 
 const columns = [
     {
@@ -17,19 +16,9 @@ const columns = [
         render: (_: any, __: any, index: number) => index + 1,
     },
     {
-        title: "Product Name",
+        title: "Category Name",
         dataIndex: "name",
         key: "name",
-    },
-    {
-        title: "Description",
-        dataIndex: "description",
-        key: "description",
-    },
-    {
-        title: "Category",
-        dataIndex: "category",
-        key: "category",
     },
     {
         title: "Status",
@@ -56,39 +45,11 @@ const columns = [
     },
 ];
 
-const getProducts = async () => {
-    const response = await getAllProductsList();
-    return response.data;
-};
-const submitProduct = async (values: any) => {
-    const products = new FormData();
-
-    const product = {
-        name: values.name,
-        description: values.description,
-        priceConfiguration: values.priceConfiguration,
-        attributes: values.attributes,
-        tenantId: values.tenantId,
-        categoryId: values.categoryId,
-        isPublished: values.isPublished,
-        image: values.image?.fileList?.[0]?.originFileObj,
-    };
-
-    console.log("Values : ", product);
-
-    products.append("name", values.name);
-    products.append("description", values.description);
-    products.append("priceConfiguration", values.priceConfiguration);
-    products.append("attributes", values.attributes);
-    products.append("tenantId", values.tenantId);
-    products.append("categoryId", values.categoryId);
-    products.append("isPublished", values.isPublished);
-    products.append("image", values.image?.fileList?.[0]?.originFileObj);
-
-    const response = await createNewProduct(products);
+const getCategory = async () => {
+    const response = await getCategoryList();
     return response.data;
 }
-const Products = () => {
+const Categories = () => {
     // const [currentPage, setCurrentPage] = useState(1);
     // const [pageSize, setPageSize] = useState(10);
     // const [filters, setFilters] = useState<any>({});
@@ -98,33 +59,14 @@ const Products = () => {
     const [formFilter] = Form.useForm();
 
     // Using useQuery to fetch the list of users
-    const { data: products, isFetching: isUserDataFetching } = useQuery({
-        queryKey: ["products"],
-        queryFn: getProducts
+    const { data: categories } = useQuery({
+        queryKey: ["categories"],
+        queryFn: getCategory
     });
-
-    // Using useMutation to handle Tenants submission
-    const { mutate: submitProductMutation, isPending: isFormSubmitting } = useMutation({
-        mutationKey: ["submitProduct"],
-        mutationFn: submitProduct,
-        onSuccess: () => {
-            setShowDrawer(false);
-            form.resetFields();
-        },
-    });
-
-    if (isFormSubmitting) {
-        return <LoadingSpinner />
-    }
 
     const handleDrawer = () => {
         setShowDrawer(false);
         setCurrentEditingProduct(null);
-    };
-
-    const handleValuesChange = (changedValues: any, allValues: any) => {
-        console.log("Changed Values : ", changedValues);
-        console.log("All Values : ", allValues);
     };
 
     const handleDrawerForm = async () => {
@@ -137,7 +79,7 @@ const Products = () => {
                 //     ...values, userId: currentEditingProduct?.userId, tenantId: values?.restaurant
                 // });
             } else {
-                submitProductMutation(form.getFieldsValue());
+                // submitUserMutation({ ...values, tenantId: values?.restaurant });
                 console.log("Form is submitting : ", form.getFieldsValue());
             }
         } catch (errorInfo) {
@@ -155,42 +97,42 @@ const Products = () => {
                             title: <Link to="/">Dashboard</Link>,
                         },
                         {
-                            title: <Link to="/products">Products</Link>,
+                            title: <Link to="/categories">Categories</Link>,
                         },
                     ]}
                 />
-                {isUserDataFetching && <Spin indicator={<LoadingOutlined spin />} />}
+                {/* {isUserDataFetching && <Spin indicator={<LoadingOutlined spin />} />} */}
             </Flex>
 
             <div style={{ marginTop: 20 }}>
-                <ProductFilter formFilter={formFilter} handleValuesChange={handleValuesChange}>
+                <ProductFilter formFilter={formFilter}>
                     <Button type="primary" icon={<PlusOutlined />} onClick={() => {
                         setShowDrawer(true)
                         setCurrentEditingProduct(null)
                         formFilter.resetFields();
                     }}>
-                        Add Product
+                        Add Category
                     </Button>
                 </ProductFilter>
             </div>
 
-            <ProductDrawer
-                title={"Create Product"}
+            {/* <ProductDrawer
+                title={!!currentEditingProduct ? "Edit Product" : "Create Product"}
                 width={720}
                 showDrawer={showDrawer}
                 handleDrawer={handleDrawer}
                 form={form}
-            // isEditMode={!!currentEditingProduct}
+                isEditMode={!!currentEditingProduct}
             >
                 <>
                     <Button onClick={() => setShowDrawer(false)}>Cancel</Button>
                     <Button type="primary" onClick={() => handleDrawerForm()}>Submit</Button>
                 </>
-            </ProductDrawer >
+            </ProductDrawer > */}
 
             <div style={{ marginTop: 20 }}>
                 <Table
-                    dataSource={products}
+                    dataSource={categories}
                     columns={[...columns,
                     {
                         title: "Action",
@@ -202,11 +144,11 @@ const Products = () => {
                         }
                     }
                     ]}
-                    rowKey={products?._id}
+                    rowKey={categories?._id}
                 />
             </div>
         </>
     )
 }
 
-export default Products
+export default Categories;

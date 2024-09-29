@@ -7,6 +7,7 @@ interface ProductDrawerProps {
     width: number;
     handleDrawer: () => void;
     showDrawer: boolean;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     form: any;
     // isEditMode: boolean;
     children: React.ReactNode;
@@ -30,10 +31,10 @@ const ProductDrawer: React.FC<ProductDrawerProps> = ({ title, width, handleDrawe
                     </Space>
                 }
             >
-                <Form layout="vertical" form={form}>
+                <Form layout="vertical" form={form} initialValues={{ "attributes": [] }}>
                     <ProductForm />
                 </Form>
-            </Drawer>
+            </Drawer >
         </>
     );
 };

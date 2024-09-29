@@ -83,8 +83,6 @@ const Tenants = () => {
         }
     }, [currentEditingTenant]);
 
-    console.log("Tenants data : ", tenants);
-
     useEffect(() => {
         refetch();
     }, [currentPage, pageSize]);

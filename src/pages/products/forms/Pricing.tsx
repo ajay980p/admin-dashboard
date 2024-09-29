@@ -10,45 +10,58 @@ const Pricing: React.FC<Props> = ({ category }) => {
     return (
         <>
             <Col span={24} style={{ marginTop: 24 }}>
-                <Card title="Product Price" bordered={false} >
+                <Card title="Product Price" bordered={false}>
                     <Row gutter={16}>
-                        {Object.entries(category.priceConfiguration).map(([configurationKey, configurationValue]) => (
-                            <div key={configurationKey}>
+                        {Object.entries(category.priceConfiguration).map(
+                            ([configurationKey, configurationValue]) => (
+                                <div key={configurationKey}>
+                                    <Space direction="vertical" size="large" style={{ width: '100%' }}>
+                                        <Typography.Text strong>
+                                            {`${configurationKey} (${configurationValue.priceType})`}
+                                        </Typography.Text>
 
-                                <Space direction='vertical' size="large" style={{ width: '100%' }}>
+                                        <Row gutter={20} style={{ width: '100%' }}>
+                                            {Object.entries(configurationValue.availableOptions).map(
+                                                ([option, price]) => (
+                                                    <Col
+                                                        span={Object.keys(configurationValue.availableOptions).length === 2 ? 10 : 8}
+                                                        key={option}
+                                                        style={{ width: '100%' }}
+                                                    >
+                                                        <Form.Item
+                                                            name={['priceConfiguration', configurationKey?.toLocaleLowerCase(), 'availableOptions', option]}
+                                                            label={price}
+                                                            rules={[
+                                                                {
+                                                                    required: true,
+                                                                    message: `Please enter price for ${price}`,
+                                                                },
+                                                            ]}
+                                                            style={{ width: '100%' }}
+                                                        >
+                                                            <InputNumber size="large" addonAfter="₹" style={{ width: '100%' }} />
+                                                        </Form.Item>
+                                                    </Col>
+                                                )
+                                            )}
+                                        </Row>
 
-                                    <Typography.Text strong> {`${configurationKey} (${configurationValue.priceType})`} </Typography.Text>
-
-                                    <Row gutter={20} style={{ width: '100%' }}>
-                                        {configurationValue.availableOptions.map((option: string, index: number) => (
-                                            <Col
-                                                span={configurationValue.availableOptions.length === 2 ? 10 : 8}
-                                                key={index}
-                                                style={{ width: '100%' }}
-                                            >
-                                                <Form.Item
-                                                    name={`${configurationKey}_${option}`}
-                                                    label={option}
-                                                    rules={[{
-                                                        required: true,
-                                                        message: `Please enter price for ${option}`
-                                                    }]}
-                                                    style={{ width: '100%' }}
-                                                >
-                                                    <InputNumber size="large" addonAfter="₹" style={{ width: '100%' }} />
-                                                </Form.Item>
-                                            </Col>
-                                        ))}
-                                    </Row>
-
-                                </Space>
-                            </div >
-                        ))}
-                    </Row >
+                                        {/* Hidden Fields to Hold Metadata for Configuration */}
+                                        <Form.Item
+                                            name={['priceConfiguration', configurationKey.toLocaleLowerCase(), 'priceType']}
+                                            initialValue={configurationValue.priceType}
+                                            hidden
+                                        >
+                                            <input type="hidden" />
+                                        </Form.Item>
+                                    </Space>
+                                </div>
+                            )
+                        )}
+                    </Row>
                 </Card>
             </Col>
         </>
-
     );
 };
 

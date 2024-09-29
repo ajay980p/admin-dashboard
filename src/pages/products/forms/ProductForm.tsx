@@ -20,22 +20,22 @@ const getTenants = async (pageData: { currentPage: number, pageSize: number }) =
     return response.data;
 }
 const ProductForm = () => {
-    const selectedCategory = Form.useWatch('category');
-    const category = selectedCategory ? JSON.parse(selectedCategory) : null;
+    const [form] = Form.useForm();
+    const selectedCategoryId = Form.useWatch('categoryId');
+    const selectedImage = Form.useWatch('image');
+
+    console.log("Selected Image : ", selectedImage);
 
     // Using useQuery to fetch the list of users
     const { data: categories } = useQuery({
         queryKey: ["categories"],
         queryFn: getCategory
     });
-
     // Using useQuery to fetch the list of Tenants
     const { data: tenants } = useQuery({
         queryKey: ["tenants"],
         queryFn: () => getTenants({ currentPage: 1, pageSize: 100 }),
     });
-
-    console.log("Tenants : ", tenants)
 
     return (
         <>
@@ -52,11 +52,12 @@ const ProductForm = () => {
                                     <Input size='large' />
                                 </Form.Item>
                             </Col>
+
                             <Col span={12}>
                                 <Form.Item
-                                    name="category"
-                                    label="Category"
-                                    rules={[{ required: true, message: 'Please select Category' }]}
+                                    name="categoryId"
+                                    label="Select Category"
+                                    rules={[{ required: true, message: 'Please select Category.' }]}
                                 >
                                     <Select
                                         size="large"
@@ -65,22 +66,22 @@ const ProductForm = () => {
                                         placeholder="Select Category"
                                         style={{ width: '100%' }}
                                     >
-                                        {categories && categories?.map((category: any) => (
-                                            <Select.Option key={category.id} value={JSON.stringify(category)}>
+                                        {categories && Array.isArray(categories) && categories?.map((category: any) => (
+                                            <Select.Option key={category._id} value={category._id}>
                                                 {category.name}
                                             </Select.Option>
                                         ))}
                                     </Select>
                                 </Form.Item>
                             </Col>
-
                         </Row>
+
                         <Row gutter={16}>
                             <Col span={24}>
                                 <Form.Item
                                     name="description"
                                     label="Description"
-                                    rules={[{ required: true, message: 'Please select Category' }]}
+                                    rules={[{ required: true, message: 'Please enter Product Description.' }]}
                                 >
                                     <TextArea rows={4} />
                                 </Form.Item>
@@ -94,17 +95,16 @@ const ProductForm = () => {
                         <Row gutter={16}>
                             <Col span={12}>
                                 <Form.Item
-                                    name="password"
-                                    rules={[{ required: true, message: 'Please enter Password' }]}
+                                    name="image"
+                                    rules={[{ required: true, message: 'Please Choose the Product Image' }]}
                                 >
                                     <Upload
                                         name="avatar"
                                         listType="picture-card"
                                         className="avatar-uploader"
-                                        showUploadList={false}
-                                        action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
-                                    // beforeUpload={beforeUpload}
-                                    // onChange={handleChange}
+                                        beforeUpload={() => false}
+                                        maxCount={1}
+                                        onRemove={() => form.setFieldsValue({ "image": null })}
                                     >
                                         <Space direction="vertical" align="center">
                                             <PlusOutlined />
@@ -122,7 +122,7 @@ const ProductForm = () => {
                         <Row gutter={16}>
                             <Col span={24}>
                                 <Form.Item
-                                    name="role"
+                                    name="tenantId"
                                     label="Select Restaurant"
                                     rules={[{ required: true, message: 'Please select Restaurant.' }]}
                                 >
@@ -130,50 +130,52 @@ const ProductForm = () => {
                                         size="large"
                                         showSearch
                                         allowClear
-                                        placeholder="Select Category"
+                                        placeholder="Select Restaurant"
                                         style={{ width: '100%' }}
                                     >
                                         {tenants && tenants?.tenantsData?.map((tenant: any) => (
-                                            <Select.Option key={tenant.id} value={tenant.name}>
+                                            <Select.Option key={tenant.id} value={tenant.id}>
                                                 {tenant.name}
                                             </Select.Option>
                                         ))}
                                     </Select>
                                 </Form.Item>
                             </Col>
-
                         </Row>
                     </Card>
                 </Col>
 
-                {selectedCategory &&
+                {selectedCategoryId && (
                     <>
-                        <Pricing category={category} />
-                        <Attributes category={category} />
+                        <Pricing category={Array.isArray(categories) && categories.find(data => data._id === selectedCategoryId)} />
+                        <Attributes category={Array.isArray(categories) && categories.find(data => data._id === selectedCategoryId)} />
                     </>
-                }
+                )}
 
                 <Col span={24} style={{ marginTop: 24 }}>
-                    <Card title="Other Properties" bordered={false} >
+                    <Card title="Other Properties" bordered={false}>
                         <Row gutter={16}>
-                            <Col span={8}>
-                                <Form.Item name="role" style={{ margin: 0, textAlign: 'center' }}>
+                            <Col span={8} style={{ display: 'flex', alignItems: 'center' }}>
+                                <Form.Item
+                                    name="isPublished"
+                                    valuePropName="checked"
+                                    style={{ margin: 0, textAlign: 'center' }}
+                                >
                                     <Switch
+                                        onChange={(checked) => form.setFieldsValue({ "isPublished": checked })}
                                         checkedChildren={<CheckOutlined />}
                                         unCheckedChildren={<CloseOutlined />}
-                                    // onChange={onChange}
-                                    />{' '}
-                                    <span style={{ marginLeft: '8px', verticalAlign: 'middle' }}>
-                                        published
-                                    </span>
+                                    />
                                 </Form.Item>
+                                <Typography.Text style={{ marginLeft: '8px', verticalAlign: 'middle', fontWeight: 500 }}>
+                                    Published
+                                </Typography.Text>
                             </Col>
                         </Row>
-
                     </Card>
                 </Col>
 
-            </Row>
+            </Row >
         </>
     )
 }

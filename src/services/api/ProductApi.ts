@@ -1,4 +1,3 @@
-import { TenantData } from "../../utils/types";
 import { apiRoutes } from "../apiRoutes";
 import { catalogService } from "../axios";
 
@@ -9,8 +8,8 @@ export const getAllProductsList = async () => {
 }
 
 // To Create New Product
-export const createNewProduct = async (userData: TenantData) => {
-    const response = await catalogService.post(apiRoutes.createProduct, userData)
+export const createNewProduct = async (productData: any) => {
+    const response = await catalogService.post(apiRoutes.createProduct, productData)
     return response;
 }
 
