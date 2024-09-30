@@ -1,24 +1,24 @@
 export const apiRoutes = {
-    login: '/auth/login',
-    logout: '/auth/logout',
-    self: '/auth/self',
+    login: '/auth/auth/login',
+    logout: '/auth/auth/logout',
+    self: '/auth/auth/self',
 
     // For User Like Consumer, Admin, Manager
-    getAllUserList: '/users/getUserList',
-    createUser: '/auth/createUser',
-    updateUser: '/users/updateUser',
+    getAllUserList: '/auth/users/getUserList',
+    createUser: '/auth/auth/createUser',
+    updateUser: '/auth/users/updateUser',
 
 
     // For Tenants Like Restaurant, Hotel, etc
-    getAllTenantsList: '/tenants/getAllTenantsList',
-    createTenant: '/tenants/createTenant',
+    getAllTenantsList: '/auth/tenants/getAllTenantsList',
+    createTenant: '/auth/tenants/createTenant',
 
 
     // For Products
-    getAllProductsList: '/product/getAllProducts',
-    createProduct: '/product/createProduct',
+    getAllProductsList: '/catalog/product/getAllProducts',
+    createProduct: '/catalog/product/createProduct',
 
 
     // For Categories
-    getCategoryList: '/category/getAllCategories',
+    getCategoryList: '/catalog/category/getAllCategories',
 }
